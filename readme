@@ -1,0 +1,39 @@
+CS106B
+======
+
+    Solution for homeworks of CS106B of Stanford University
+ 
+    Kevin Leptons <kevin.leptons@gmail.com>
+    July, 2017
+
+    Still processcing...
+
+FEATURES
+========
+
+    - Solution for homwork
+    - Unsolved: 003a-tree, 003a-mandelbrot
+
+USAGE
+=====
+
+    # depedency tools
+    apt-get install git gcc cmake libgl1-mesa-dev freeglut3-dev
+
+    # source code
+    git clone https://github.com/kevin-leptons/cs106b.git
+    cd cs106b
+
+    # build
+    # libraries put in dest/lib/ directory
+    # executalbe put in dest/bin/ directory
+    ./ctl build
+
+    # or clear
+    ./ctl clear
+
+REFERENCES
+==========
+
+    http://csmajor.stanford.edu/Requirements.shtml
+    http://web.stanford.edu/class/archive/cs/cs106b/cs106b.1164/
