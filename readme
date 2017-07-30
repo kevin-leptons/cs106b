@@ -35,7 +35,7 @@ USAGE
     Each assignment's solution located in "src/imp/{#}.c". For example,
     solution of assignment 001 located in "src/imp/001.c".
 
-    To build, follow Shell commands:
+    To build, follow shell commands:
 
         # depedency tools
         apt-get install git gcc cmake libgl1-mesa-dev freeglut3-dev
