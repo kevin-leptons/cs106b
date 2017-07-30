@@ -25,26 +25,32 @@ FEATURES
     007         Trialblazer                     Running
     ==========  ==============================  ===========
 
-    Each solution located in "src/imp/{#}.c". For example, solution of
-    assignment 001 located in "src/imp/001.c".
-
 USAGE
 =====
 
-    # depedency tools
-    apt-get install git gcc cmake libgl1-mesa-dev freeglut3-dev
+    Although cs106b course use C++ and Stanford C++ Library, this project use
+    C and implement everything from scratch.  Abstract Data Types are defined
+    in "include/cs106b/*.h" and implemented in "src/lib/*.c".
 
-    # source code
-    git clone https://github.com/kevin-leptons/cs106b.git
-    cd cs106b
+    Each assignment's solution located in "src/imp/{#}.c". For example,
+    solution of assignment 001 located in "src/imp/001.c".
 
-    # build
-    # libraries put in dest/lib/ directory
-    # executalbe put in dest/bin/ directory
-    ./ctl build
+    To build, follow Shell commands:
 
-    # or clear
-    ./ctl clear
+        # depedency tools
+        apt-get install git gcc cmake libgl1-mesa-dev freeglut3-dev
+
+        # source code
+        git clone https://github.com/kevin-leptons/cs106b.git
+        cd cs106b
+
+        # build
+        # libraries put in dest/lib/ directory
+        # executalbe put in dest/bin/ directory
+        ./ctl build
+
+        # or clear
+        ./ctl clear
 
 REFERENCES
 ==========
