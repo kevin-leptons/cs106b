@@ -1,14 +1,14 @@
 /*
 SYNOPSIS
 
-    Assignment 003a
+    Assignment 003aa
     Display Sierpinski.
     ADT: None
     Algorithm: Recursion
 
 USAGE
 
-    $ ./dest/bin/003a -n 6
+    $ ./dest/bin/003aa -n 6
 
 AUTHORS
 
@@ -113,8 +113,8 @@ void sierpinski(float ax, float ay, float bx, float by, float cx, float cy,
 void cli_help(void)
 {
     printf("USAGE\n");
-    printf("    003a [-n steps]\n");
-    printf("    003a -h\n\n");
+    printf("    003aa [-n steps]\n");
+    printf("    003aa -h\n\n");
     
     printf("OPTIONS\n");
     printf("    -n      Number of steps, default is %u\n", SIER_NSTEP_DEF);
