@@ -1,15 +1,19 @@
 #include <cs106b/pqueue.h>
 
+#include <string.h>
+#include <stdbool.h>
+
 #define PQUEUE_BSIZE 16
 #define PQUEUE_ESIZE 2
 
 static int _pqueue_resize(struct pqueue *q, size_t max_size);
 
-int pqueue_init(struct pqueue *q)
+int pqueue_init(struct pqueue *q, enum pqueue_type type)
 {
     q->size = 0;
     q->max_size = 0;
     q->items = NULL;
+    q->type = type;
 
     return 0;
 }
@@ -19,13 +23,14 @@ int pqueue_push(struct pqueue *q, void *data, size_t priority)
     size_t parent;
     size_t child;
     struct pqueue_item tmp;
+    bool must_swap;
 
     // extend memory
     if (q->max_size == 0) {
         if (_pqueue_resize(q, PQUEUE_BSIZE))
             return -1;
     }
-    if (q->size == q->max_size) {
+    if (q->size == (q->max_size - 1)) {
         if (_pqueue_resize(q, q->max_size * PQUEUE_ESIZE))
             return -1;
     }
@@ -43,7 +48,13 @@ int pqueue_push(struct pqueue *q, void *data, size_t priority)
             break;
 
         // swap
-        if (q->items[child].priority < q->items[parent].priority) {
+        must_swap = q->items[child].priority < q->items[parent].priority;
+        if (q->type == PQUEUE_SMALLEST) {}  // default
+        else if (q->type == PQUEUE_BIGGEST)
+            must_swap = !must_swap;
+        else
+            return -1;
+        if (must_swap) {
             tmp = q->items[parent];
             q->items[parent] = q->items[child];
             q->items[child] = tmp;
@@ -64,6 +75,8 @@ void * pqueue_pop(struct pqueue *q)
     size_t rchild;
     size_t child;
     struct pqueue_item tmp;
+    bool must_swap;
+    bool lchild_sm;
 
     // empty pqueue
     if (q->size == 0)
@@ -88,14 +101,27 @@ void * pqueue_pop(struct pqueue *q)
         if (rchild > q->size)
             rchild = lchild;
 
-        // select minimize value of priority
-        if (q->items[lchild].priority < q->items[rchild].priority)
+        // select child to swap
+        lchild_sm = q->items[lchild].priority < q->items[rchild].priority;
+        if (q->type == PQUEUE_SMALLEST) {} // default
+        else if (q->type == PQUEUE_BIGGEST)
+            lchild_sm = !lchild_sm;
+        else
+            return -1;
+
+        if (lchild_sm)
             child = lchild;
         else
             child = rchild;
 
         // swap
-        if (q->items[child].priority < q->items[parent].priority) {
+        must_swap = q->items[child].priority < q->items[parent].priority;
+        if (q->type == PQUEUE_SMALLEST) {} // default
+        else if (q->type == PQUEUE_BIGGEST)
+            must_swap = !must_swap;
+        else
+            return -1;
+        if (must_swap) {
             tmp = q->items[parent];
             q->items[parent] = q->items[child];
             q->items[child] = tmp;
@@ -106,7 +132,7 @@ void * pqueue_pop(struct pqueue *q)
     }
 
     // resize memory
-    if (q->size < (q->max_size / PQUEUE_ESIZE) && q->size > PQUEUE_BSIZE) {
+    if (q->size < (q->max_size / PQUEUE_ESIZE) && q->max_size > PQUEUE_BSIZE) {
         if (_pqueue_resize(q, q->max_size / PQUEUE_ESIZE))
             return NULL;
     }
@@ -135,12 +161,13 @@ void pqueue_free(struct pqueue *q)
 static int _pqueue_resize(struct pqueue *q, size_t max_size)
 {
     struct pqueue_item *new_items;
-
-    new_items = realloc(q->items, sizeof(struct pqueue_item) * max_size);
+    size_t new_msize;
+    
+    new_msize = sizeof(*new_items) * max_size;
+    new_items = realloc(q->items, new_msize);
     if (new_items == NULL)
         return -1;
 
-    free(q->items);
     q->items = new_items;
     q->max_size = max_size;
 

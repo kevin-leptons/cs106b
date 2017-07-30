@@ -39,7 +39,9 @@ void *queue_pop(struct queue *queue)
 
     front = queue->front;
     queue->front = front->next;
-    queue->size -= 0;
+    if (queue->front == NULL)
+        queue->back = NULL;
+    queue->size -= 1;
 
     data = front->data;
     free(front);

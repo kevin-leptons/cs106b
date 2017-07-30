@@ -1,18 +1,32 @@
 CS106B
 ======
 
-    Solution for homeworks of CS106B of Stanford University
+    Solution for homeworks of CS106B course of Stanford University
  
     Kevin Leptons <kevin.leptons@gmail.com>
     July, 2017
 
-    Still processcing...
-
 FEATURES
 ========
 
-    - Solution for homwork
-    - Unsolved: 003a-tree, 003a-mandelbrot
+    ==========  ==============================  ===========
+    #           Assigment's name                State
+    ==========  ==============================  ===========
+    001         Game of Life                    Done
+    002a        Word Ladder                     Done
+    002b        NNgrams                         Done
+    003aa       Sierpinski                      Done
+    003ab       Tree Fractal                    Skip
+    003ac       Mandelbrot                      Skip
+    003b        Grammar solver                  Done
+    004         Boggle                          Done
+    005         Priority Queue                  Done
+    006         Huffman                         Done
+    007         Trialblazer                     Running
+    ==========  ==============================  ===========
+
+    Each solution located in "src/imp/{#}.c". For example, solution of
+    assignment 001 located in "src/imp/001.c".
 
 USAGE
 =====
@@ -37,3 +51,4 @@ REFERENCES
 
     http://csmajor.stanford.edu/Requirements.shtml
     http://web.stanford.edu/class/archive/cs/cs106b/cs106b.1164/
+    https://github.com/kevin-leptons/csdoc

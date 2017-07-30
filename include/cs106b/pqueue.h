@@ -5,7 +5,7 @@ NAME
 
 SYNOPSIS
 
-    int pqueue_init(struct pqueue *q);
+    int pqueue_init(struct pqueue *q, enum pqueue_type type);
     int pqueue_push(struct pqueue *q, void *data, size_t priority);
     void * pqueue_pop(struct pqueue *q);
     void * pqueue_top(struct pqueue *q);
@@ -57,6 +57,12 @@ AUTHORS
 
 #include <stdlib.h>
 
+enum pqueue_type
+{
+    PQUEUE_SMALLEST,
+    PQUEUE_BIGGEST
+};
+
 struct pqueue_item
 {
     size_t priority;
@@ -68,9 +74,10 @@ struct pqueue
     struct pqueue_item *items;
     size_t size;
     size_t max_size;
+    enum pqueue_type type;
 };
 
-int pqueue_init(struct pqueue *q);
+int pqueue_init(struct pqueue *q, enum pqueue_type type);
 int pqueue_push(struct pqueue *q, void *data, size_t priority);
 void * pqueue_pop(struct pqueue *q);
 void * pqueue_top(struct pqueue *q);

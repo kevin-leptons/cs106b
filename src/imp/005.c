@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    if (pqueue_init(&q))
+    if (pqueue_init(&q, PQUEUE_SMALLEST))
         exit_err("pqueue_init");
     if (_pqueue_load(&q, argv[1]))
         exit_err("_pqueue_load");
