@@ -9,9 +9,10 @@ TABLE OF CONTENTS
 
     Information
     Data
-    Algorithms
+    Algorithm
     Algorithm's complexity
     Big-O
+	ADT
     Vectors
     Grids
     Strings
@@ -78,8 +79,8 @@ DATA
 
        <by translate.google.com>
 
-ALGORITHMS
-==========
+ALGORITHM
+=========
 
     It is describes "How to work with DATA?". ALGORITHM includes three parts:
 
@@ -122,47 +123,34 @@ ALGORITHM'S COMPLEXITY
     DATA_AMOUNT is quantitive of DATA, any DATA is quantitive. It is number of
     element of data. In this case, it is number of element of input data.
 
-    For example, here is ALGORITHM to find smallest number from numbers and
-    complexity of it:
+    For example, here is ALGORITHM to calculate total of numbers:
 
         Input: List with n numbers
-        Output: First smallest number
+        Output: Total of numbers of input
         Operations:
-            smallest = input[0]                     // 1
-            i = 2                                   // 1
-            for:                                    // n
-                if (i == n):                        // 1
-                    break;
-                if (input[i] < smallest):           // 1
-                    smallest = input[i]             // 1 is wrost case
-                i = i + 1                           // 1
-            return smallest
+            total = 0                     			// 1
+            for (i = 0; i < n; i++):                // 1; n(1 + 1)
+				total = total + input[i]			// 1 + 1
+            return total
 
-    In last loop, it only check i == n and then exit from loop. Complexity of
-    above ALGORITHM is: 
+    Complexity of above ALGORITHM is: 
     
-        f(n) = 1 + 1 + (n - 1)(1 + 1 + 1 + 1) + 1
-             = 4(n - 1) + 3
-             = 4n - 1
+        f(n) = 1 + 1 + n(1 + 1)(1 + 1)
+             = 4n + 2
 
 BIG-O
 =====
 
-    BIG-O is notation show "What biggest factor affected to
-    ALGORITHM_COMPLEXITY?". In simple, from complexity function, remove all
+    BIG-O is notation show "What biggest factor affect to
+    ALGORITHM_COMPLEXITY?". In simple, from complexity function, strip all
     of constants and chose biggest factor and it is BIG-O.
 
-    For above example of ALGORITHM_COMPLEXITY:
+	With complex algorithms, get extract ALGORITHM_COMPLEXITY
+    function is hard or depend on other factors than DATA_AMOUNT. Best way 
+	is use worst case of loops, strip for constants to get worst 
+	ALGORITHM_COMPLEXITY, then get Big-O from that function.
 
-        Complexity function: f(n) = 4n - 1
-        Strip all of constants: g(n) = n
-        Chose biggest factor: BIG-O = O(n)
-
-    Let work with more complex ALGORITHM, here is ALGORITHM to sort an list of
-    number by increasing. In this case, detect correct ALGORITHM_COMPLEXITY
-    function is not neccessary. Best is use worst case of loop and strip for
-    constants.
-
+	For example, here is ALGORITHM to sort an list of number by increasing.
 
         Input: List of n numbers
         Output: List of n numbers by increasing
@@ -175,7 +163,20 @@ BIG-O
                         input[k] = tmp                  // 1
             return input
 
-        Worst complexity function: f(n) = 2(n - 1).2(n - 1)(1 + 1 + 1 + 1)
-                                        = 16(n^2 -2n - 1)
+        Worst ALGORITHM_COMPLEXITY: f(n) = 2(n - 1).2(n - 1)(1 + 1 + 1 + 1)
+                                         = 16(n^2 -2n - 1)
         Strip all of constants: g(n) = n^2 - n
         Chose biggest factor: BIG-0 = O(n^2)
+
+ADT
+===
+
+	ADT is Abstract Data Type. It describes programming interfaces, includes
+	INPUT_DATA, OUTPUT_DATA corresspond with input and output of ALGORITHM.
+	However, it doesn't specifies OPERATIONS. People is free to implements
+	ADT.
+
+VECTORS
+=======
+
+	
