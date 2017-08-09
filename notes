@@ -10,7 +10,8 @@ TABLE OF CONTENTS
     Information
     Data
     Algorithms
-    Big(O)
+    Algorithm's complexity
+    Big-O
     Vectors
     Grids
     Strings
@@ -86,7 +87,6 @@ ALGORITHMS
         Output: describes destination DATA
         Operations: describes how to get destination DATA from source DATA
     
-    
     For examples, here is ALGORITHM to find person with name:
 
         Input: List of person
@@ -103,8 +103,79 @@ ALGORITHMS
     such as paragraphs, images, sound or videos and it describes INPUT_DATA,
     OUPUT_DATA, OPERATIONS.
 
-BIG(O)
-======
+ALGORITHM'S COMPLEXITY
+======================
 
-    BIG(O) is notation show "How OPERATION_AMOUNT change while DATA_AMOUNT
-    change?".
+    ALGORITHM_COMPLEXITY is function show "How OPERATION_AMOUNT change while
+    input's DATA_AMOUNT change?" and applies for number ALGORITHM.
+
+    Why ALGORITHM_COMPLEXITY applies for only number ALGORITHM?. Because it's
+    definition related with two concepts OPERATION_AMOUNT which base on
+    numbers.
+
+    OPERATION_AMOUNTS is quantitive of OPERATIONS. It is calculates by sum all
+    of PRIMITIVE_OPERATIONS. PRIMITIVE_OPERATIONS applies for operations with
+    numbers, include: ADD, SUB, MUL, DIV, ASN, >, >=, <, <=, ==. Binary
+    numbers have more PRIMITIVE_OPERATIONS, include: SHIFT, AND, OR, NOR, XOR.
+    Quanlity of each PRIMITIVE_OPERATIONS is one. 
+
+    DATA_AMOUNT is quantitive of DATA, any DATA is quantitive. It is number of
+    element of data. In this case, it is number of element of input data.
+
+    For example, here is ALGORITHM to find smallest number from numbers and
+    complexity of it:
+
+        Input: List with n numbers
+        Output: First smallest number
+        Operations:
+            smallest = input[0]                     // 1
+            i = 2                                   // 1
+            for:                                    // n
+                if (i == n):                        // 1
+                    break;
+                if (input[i] < smallest):           // 1
+                    smallest = input[i]             // 1 is wrost case
+                i = i + 1                           // 1
+            return smallest
+
+    In last loop, it only check i == n and then exit from loop. Complexity of
+    above ALGORITHM is: 
+    
+        f(n) = 1 + 1 + (n - 1)(1 + 1 + 1 + 1) + 1
+             = 4(n - 1) + 3
+             = 4n - 1
+
+BIG-O
+=====
+
+    BIG-O is notation show "What biggest factor affected to
+    ALGORITHM_COMPLEXITY?". In simple, from complexity function, remove all
+    of constants and chose biggest factor and it is BIG-O.
+
+    For above example of ALGORITHM_COMPLEXITY:
+
+        Complexity function: f(n) = 4n - 1
+        Strip all of constants: g(n) = n
+        Chose biggest factor: BIG-O = O(n)
+
+    Let work with more complex ALGORITHM, here is ALGORITHM to sort an list of
+    number by increasing. In this case, detect correct ALGORITHM_COMPLEXITY
+    function is not neccessary. Best is use worst case of loop and strip for
+    constants.
+
+
+        Input: List of n numbers
+        Output: List of n numbers by increasing
+        Operations:
+            for (i = 0; i < n - 1; i++):                // 2(n - 1)
+                for (k = i + 1; k < n; k++):            // 2(n - 1)
+                    if (input[i] > input[k]):           // 1
+                        tmp = input[i]                  // 1
+                        input[i] = input[k]             // 1
+                        input[k] = tmp                  // 1
+            return input
+
+        Worst complexity function: f(n) = 2(n - 1).2(n - 1)(1 + 1 + 1 + 1)
+                                        = 16(n^2 -2n - 1)
+        Strip all of constants: g(n) = n^2 - n
+        Chose biggest factor: BIG-0 = O(n^2)
