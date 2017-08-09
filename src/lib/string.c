@@ -171,7 +171,7 @@ struct string * str_clone(const struct string *src)
         return NULL;
     if (str_init(new_str))
         goto ERROR;
-    if (str_cpy(new_str, src))
+    if (str_cpy(new_str, (struct string *) src))
         goto ERROR;
 
     return new_str;

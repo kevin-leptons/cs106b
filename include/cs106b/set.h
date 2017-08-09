@@ -11,7 +11,7 @@ COMPLEXITY
 
     fn                  best                worst
     -----------------------------------------------------------
-    set_init()          htable_init()       htable_init() 
+    set_init()          htable_init()       htable_init()
     set_add()           htable_set()        htable_set()
     set_del()           htable_del()        htable_del()
     set_exist()         htable_get()        htable_get()
@@ -35,7 +35,7 @@ DESCRIPTION
 RETURNS
 
     set_init(), set_add(), set_del() on success return 0, on failure return -1.
-    
+
     set_exist() on item is exist return 1, on item is not exist return 0.
 
 AUTHORS
@@ -49,16 +49,21 @@ AUTHORS
 #include <stdlib.h>
 
 #include <cs106b/htable.h>
+#include <cs106b/vector.h>
 
 struct set
 {
     struct htable map;
+    struct vector keys;
+    size_t iter;
 };
 
 int set_init(struct set *set);
 int set_add(struct set *set, const char *item);
 int set_del(struct set *set, const char *item);
 int set_exist(struct set *set, const char *item);
+void *set_next(struct set *set);
+int set_iter_reset(struct set *set);
 void set_free(struct set *set);
 
 #endif

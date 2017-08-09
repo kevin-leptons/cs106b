@@ -1,0 +1,110 @@
+INDEXS
+======
+    
+    Summary of Abtract Data Types and Algorithm. However, it describes some
+    concepts to clear contents.
+
+TABLE OF CONTENTS
+=================
+
+    Information
+    Data
+    Algorithms
+    Big(O)
+    Vectors
+    Grids
+    Strings
+    Stacks
+    Queues
+    Recursion
+    Recursive Backstacking
+    Exhaustive search
+    Sorting
+    Linked Lists
+    Binary Heaps
+    Trees
+    Binary Search Trees
+    Graphs
+    Hashing
+    DFS
+    BFS
+    Dijktra
+    A*
+    Skip Lists
+    Bloom Filters
+
+INFORMATION
+===========
+
+    It describe properties of things. It is impossible to show "How is
+    INFORMATION look like?" because INFORMATION is abstract concepts. For
+    example, two lines below describes a person then meaning of two lines is
+    INFORMATION:
+
+        name: kevin leptons
+        gender: male
+
+    As above, name and gender describes for a person, but it is not all. In
+    real world, a small thing to a big thing also contains many INFORMATION
+    and human still not able to know INFORMATION is limited or not. Why?,
+    because Physical Science always find new particulate matter, smaller and
+    they can not proof that "There are smallest particulate matter". Computer
+    Science knows that INFORMATION is big and find the way to work with it.
+
+    Don't misstake INFORMATION and DATA. As above example, meaning of two
+    lines is INFORMATION, not two lines. Two lines is DATA and will be present
+    below.
+
+DATA
+====
+
+    It is things represents for INFORMATION. Good news, it is able to show
+    "How is DATA look like?". For example, with name and gender of a person,
+    human use writting language to represent to that's INFORMATION, and it is
+    DATA:
+
+        name: kevin leptons
+        gender: male
+
+    Now, above DATA have 19 + 12 = 31 characters. Characters is English
+    alphabet. And of course, characters is able to see.
+
+    INFORMATION can be represents by more than one DATA. Here is DATA in
+    Spanish version with same INFORMATION above:
+
+       nombre: kevin leptons
+       género: masculino 
+
+       <by translate.google.com>
+
+ALGORITHMS
+==========
+
+    It is describes "How to work with DATA?". ALGORITHM includes three parts:
+
+        Input: describes source DATA
+        Output: describes destination DATA
+        Operations: describes how to get destination DATA from source DATA
+    
+    
+    For examples, here is ALGORITHM to find person with name:
+
+        Input: List of person
+        Output: 
+            On found return first person who have name
+            On not found return NOT_FOUND
+        Operations:
+            for each person in Input:
+                if name of person is same with name:
+                    return person
+            return NOT_FOUND
+
+    Defination above use PESUDO_CODE but ALGORITHM can be show by any things
+    such as paragraphs, images, sound or videos and it describes INPUT_DATA,
+    OUPUT_DATA, OPERATIONS.
+
+BIG(O)
+======
+
+    BIG(O) is notation show "How OPERATION_AMOUNT change while DATA_AMOUNT
+    change?".

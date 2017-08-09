@@ -91,6 +91,7 @@ int vector_insert(struct vector *vector, size_t index, void *data);
 int vector_add(struct vector *vector, void *data);
 int vector_remove(struct vector *vector, size_t index);
 void *vector_at(struct vector *vector, size_t index);
+void *vector_end(struct vector *vector);
 int vector_copy(struct vector *dest, struct vector *src);
 struct vector * vector_clone(struct vector *src);
 void vector_free(struct vector *vector, bool free_data);

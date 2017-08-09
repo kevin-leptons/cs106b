@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(cs106b)
 
 # flags
-set(CMAKE_C_FLAGS "-std=gnu99 -Wall -g3")
+set(CMAKE_C_FLAGS "-std=gnu99 -Wall -g3 -lm")
 
 # define
 add_definitions(-D_FILE_OFFSET_BITS=64)

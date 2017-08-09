@@ -71,7 +71,7 @@ struct pqueue_item
 
 struct pqueue
 {
-    struct pqueue_item *items;
+    struct pqueue_item *items;  // use from 1 index instead of 0
     size_t size;
     size_t max_size;
     enum pqueue_type type;
@@ -81,6 +81,7 @@ int pqueue_init(struct pqueue *q, enum pqueue_type type);
 int pqueue_push(struct pqueue *q, void *data, size_t priority);
 void * pqueue_pop(struct pqueue *q);
 void * pqueue_top(struct pqueue *q);
+size_t pqueue_tpri(struct pqueue *q);
 void pqueue_free(struct pqueue *q);
 
 #endif

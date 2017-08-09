@@ -67,11 +67,18 @@ int vector_remove(struct vector *vector, size_t index)
     return 0;
 }
 
-void *vector_at(struct vector *vector, size_t index)
+void * vector_at(struct vector *vector, size_t index)
 {
     if (index >= vector->size)
         return NULL;
     return (vector->front + index)->data;
+}
+
+void *vector_end(struct vector *vector)
+{
+    if (vector->size == 0)
+        return NULL;
+    return vector_at(vector, vector->size - 1);
 }
 
 int vector_copy(struct vector *dest, struct vector *src)

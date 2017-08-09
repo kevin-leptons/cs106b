@@ -1,3 +1,16 @@
+/*
+SYNOPSIS
+
+    Implement hash table in <cs106b/htable.h>.
+
+DESCRIPTION
+
+    Hash string algorithm: Murmur version 3, string input, 32bits output.
+
+    Collision algorithm: Open addressing - Quadratic probing with alternating
+    sign.
+*/
+
 #include <cs106b/htable.h>
 
 #include <string.h>
@@ -5,14 +18,22 @@
 
 #define HTABLE_BSIZE 8
 #define HTABLE_ESIZE 2
-#define LOAD_FACTOR_BORDER 1 / 2.0f
+#define LOAD_FACTOR_TOP 1 / 2.0f
+#define LOAD_FACTOR_BOT LOAD_FACTOR_TOP / 2
+#define HTABLE_MOD_N 4
+#define HTABLE_MOD_B 3
+#define HTABLE_MOD_KE 2
+#define HTABLE_MOD_KB 2 * HTABLE_MOD_KE
 
 static uint32_t _murmur3_32(const uint8_t* key, size_t len, uint32_t seed);
 static size_t _hash_str(const char *str, size_t mask);
 static size_t _index_key(const char *str, size_t mask);
-static int _htable_resize(struct htable *table, size_t max_size);
-static struct htable_item * _htable_lookup(struct htable *table,
-                                          const char *key, size_t index);
+static int _htable_resize_modk(struct htable *table, size_t mod_k);
+static int _htable_extend(struct htable *table);
+static int _htable_narrow(struct htable *table);
+static struct htable_item *
+_htable_lookup(struct htable_item *items, size_t max_size, const char *key,
+               size_t index);
 
 int htable_init(struct htable *table)
 {
@@ -30,32 +51,27 @@ int htable_set(struct htable *table, const char *key, const void *value)
     struct htable_item *item;
     size_t key_len;
 
-    if (table->items == NULL) {
-        if (_htable_resize(table, HTABLE_BSIZE))
-            return -1;
-    } else {
-        if (table->size / (double) table->max_size >= LOAD_FACTOR_BORDER)
-            if (_htable_resize(table, table->max_size * HTABLE_ESIZE))
-                return -1;
-    }
+    if (_htable_extend(table))
+        return -1;
 
     index = _index_key(key, table->mask);
-    item = _htable_lookup(table, key, index);
+    item = _htable_lookup(table->items, table->max_size, key, index);
     if (item == NULL)
         return -1;
 
     if (item->key == NULL) {
+        // create new key-value pair
         key_len = strlen(key);
         item->key = malloc(key_len + 1);
         if (item->key == NULL)
             return -1;
-        item->key[key_len - 1] = 0;
         memcpy(item->key, key, key_len);
+        item->key[key_len] = 0;
         item->value = (void *) value;
-        item->index = index;
         table->size += 1;
     }
     else {
+        // override value of key
         item->value = (void *) value;
     }
 
@@ -71,7 +87,7 @@ void *htable_get(struct htable *table, const char *key)
         return NULL;
 
     index = _index_key(key, table->mask);
-    item = _htable_lookup(table, key, index);
+    item = _htable_lookup(table->items, table->max_size, key, index);
     if (item == NULL || item->key == NULL)
         return NULL;
 
@@ -82,28 +98,18 @@ int htable_del(struct htable *table, const char *key)
 {
     size_t index;
     struct htable_item *item;
-    struct htable_item *next_item;
 
     if (table->mask == 0)
         return -1;
 
     index = _index_key(key, table->mask);
-    item = _htable_lookup(table, key, index);
+    item = _htable_lookup(table->items, table->max_size, key, index);
     if (item == NULL || item->key == NULL)
         return -1;
     item->key = NULL;
 
-    for (index++; index < table->max_size; index++) {
-        next_item = table->items + index;
-        if (next_item->key == NULL)
-            break;
-        if (next_item->index == item->index) {
-            item->key = next_item->key;
-            item->value = next_item->value;
-            item = next_item;
-            next_item->key = NULL;
-        }
-    }
+    if (_htable_narrow(table))
+        return -1;
 
     table->size -= 1;
     return 0;
@@ -120,7 +126,13 @@ int htable_clear(struct htable *table)
 
 int htable_resize(struct htable *table, size_t max_size)
 {
-    return _htable_resize(table, max_size);
+    size_t mod_k;
+
+    mod_k = (max_size - HTABLE_MOD_B) / HTABLE_MOD_N;
+    if ((max_size - HTABLE_MOD_B) % HTABLE_MOD_N != 0)
+        mod_k += 1;
+
+    return _htable_resize_modk(table, mod_k);
 }
 
 void htable_free(struct htable *table)
@@ -134,57 +146,110 @@ void htable_free(struct htable *table)
     table->max_size = 0;
 }
 
-static int _htable_resize(struct htable *table, size_t max_size)
+static int _htable_resize_modk(struct htable *table, size_t mod_k)
 {
     struct htable_item *new_items;
     struct htable_item *old_item;
+    struct htable_item *new_item;
+    size_t new_msize;
+    size_t new_dsize;
+    size_t new_mask;
     size_t index;
-    size_t mem_size;
-    size_t mask;
+    size_t to_copy;
+    size_t copy_count;
     size_t i;
 
-    mask = max_size - 1;
-    mem_size = max_size * sizeof(*new_items);
-    new_items = malloc(mem_size);
+    new_msize = mod_k * HTABLE_MOD_N + HTABLE_MOD_B;
+    new_mask = new_msize - 1;
+    new_dsize = new_msize * sizeof(*new_items);
+    new_items = malloc(new_dsize);
     if (new_items == NULL)
         return -1;
-    memset(new_items, 0, mem_size);
+    memset(new_items, 0, new_dsize);
+    to_copy = new_msize < table->size ? new_msize : table->size;
 
+    // hash old items into new memory block
+    copy_count = 0;
     for (i = 0; i < table->max_size; i++) {
+        // break condition
+        if (copy_count == to_copy)
+            break;
+
+        // skip for empty slot
         old_item = table->items + i;
         if (old_item->key == NULL)
             continue;
-        index = _index_key(old_item->key, mask);
-        (new_items + index)->index = index;
-        for (; index < max_size; index++) {
-            if ((new_items + index)->key == NULL)
-                break;
-        }
-        if (index == max_size)
+
+        // find slot
+        index = _index_key(old_item->key, new_mask);
+        new_item = _htable_lookup(new_items, new_msize, old_item->key, index);
+        if (new_item == NULL)
             goto ERROR;
-        (new_items + index)->key = old_item->key;
-        (new_items + index)->value = old_item->value;
+
+        // copy data
+        *new_item = *old_item;
+
+        copy_count += 1;
     }
 
-    free(table->items);
+    if (table->items != NULL)
+        free(table->items);
     table->items = new_items;
-    table->max_size = max_size;
-    table->mask = mask;
+    table->max_size = new_msize;
+    table->mask = new_mask;
 
     return 0;
+
 ERROR:
     if (new_items != NULL)
         free(new_items);
     return -1;
 }
 
+static int _htable_extend(struct htable *table)
+{
+    double load_factor;
+    size_t mod_k;
+
+    load_factor = (table->size + 1) / (double) table->max_size;
+    if (load_factor < LOAD_FACTOR_TOP)
+        return 0;
+
+    mod_k = (table->max_size - HTABLE_MOD_B) / HTABLE_MOD_N;
+    mod_k += 1;
+
+    return _htable_resize_modk(table, mod_k);
+}
+
+static int _htable_narrow(struct htable *table)
+{
+    double load_factor;
+    size_t mod_k;
+
+    load_factor = table->size / table->max_size;
+    if (load_factor < LOAD_FACTOR_BOT)
+        return 0;
+
+    mod_k = (table->max_size - HTABLE_MOD_B) / HTABLE_MOD_N;
+    mod_k -= 1;
+
+    return _htable_resize_modk(table, mod_k);
+}
+
 static struct htable_item *
-_htable_lookup(struct htable *table, const char *key, size_t index)
+_htable_lookup(struct htable_item *items, size_t max_size, const char *key,
+               size_t index)
 {
     struct htable_item *item;
+    size_t new_index;
+    size_t i;
 
-    for (; index < table->max_size; index++) {
-        item = table->items + index;
+    for (i = 0; i < max_size; i++) {
+        if (i % 2 == 0)
+            new_index = (index + i * i) % max_size;
+        else
+            new_index = (index - i * i) % max_size;
+        item = items + new_index;
         if (item->key == NULL)
             return item;
         else if (strcmp(item->key, key) == 0)

@@ -14,9 +14,9 @@ COMPLEXITY
     fn                  best        worst
     -------------------------------------------------
     htable_init()       O(1)        O(1)
-    htable_set()        ~O(1)       ~O(1)
-    htable_get()        ~O(1)       ~O(1)
-    htable_del()        ~O(1)       ~O(1)
+    htable_set()        O(1)        O(n)
+    htable_get()        O(1)        O(n)
+    htable_del()        O(1)        O(n)
     htable_clear()      O(1)        O(1)
     htable_resize()     O(n)        O(n)
     htable_free()       O(1)        O(1)
@@ -61,7 +61,6 @@ struct htable_item
 {
     char *key;
     void *value;
-    size_t index;
 };
 
 struct htable

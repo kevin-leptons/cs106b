@@ -1,5 +1,7 @@
 #include <cs106b/grid.h>
 
+#include <string.h>
+
 static int _grid_resize(struct grid *grid, size_t row_size, size_t col_size);
 
 int grid_init(struct grid *grid, size_t row_size, size_t col_size)
