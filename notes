@@ -15,10 +15,11 @@ TABLE OF CONTENTS
     ADT
     Arrays
     Vectors
-    Grids
-    Strings
     Stacks
     Queues
+    Grids
+    Strings
+    Hash table
     Recursion
     Recursive Backstacking
     Exhaustive search
@@ -227,6 +228,7 @@ VECTORS
     int vector_del(struct vector *vector, size_t index);
     int vector_get(struct vector *vector, size_t index, void **value);
     int vector_free(struct vector *vector);
+    size_t vector_size(struct vector *vector);
 
 STACKS
 ======
@@ -239,6 +241,7 @@ STACKS
     int stack_pop(struct stack *stack, void **value);
     int stack_top(struct stack *stack, void **value);
     int stack_free(struct stack *stack);
+    size_t stack_size(struct stack *stack);
 
 QUEUES
 ======
@@ -246,4 +249,87 @@ QUEUES
     Queues is use to store items and retrieve by first in first out order.
 
     struct queue {};
-    int struct_init(struct queue *queue);
+    int queue_init(struct queue *queue);
+    int queue_push(struct queue *queue, void *value);
+    int queue_pop(struct queue *queue, void **value);
+    int queue_top(struct queue *queue, void **value);
+    int queue_free(struct queue *queue);
+    size_t queue_size(struct queue *queue);
+
+GRIDS
+=====
+
+    Grid is use to store/retrieve items with two indexes, row and col.
+    Size of grid is not automatic change, it require specific call to do
+    that.
+
+    struct grid {};
+    int grid_init(struct grid *grid, size_t row_size, size_t col_size);
+    int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
+    int grid_set(struct grid *grid, size_t row, size_t col, *value);
+    int grid_get(struct grid *grid, size_t row, size_t col, **value);
+    int grid_free(struct grid *grid);
+    size_t grid_row_size(struct grid *grid);
+    size_t grid_col_size(struct grid *grid);
+
+STRINGS
+=======
+
+    String is use to work with sequence characters.
+
+    struct str {};
+    int str_init(struct str *str);
+    int str_cmp(struct str *left, struct str *right);
+    int str_clr(struct str *str, size_t index, size_t len);
+    int str_cpy(struct str *dest, struct str *src);
+    int str_ins(struct str *dest, size_t index, struct string *part);
+    int str_rpl(struct str *dest, size_t index, size_t len, struct str *part);
+    int str_cat(struct str *dest, struct str *part);
+    int str_free(struct str *str);
+    int str_get(struct str *str, size_t index, char *value);
+    int str_set(struct str *str, size_t index, char value);
+    struct str * str_sub(struct str *str, size_t index, size_t len);
+    struct str * str_clone(struct str *str);
+    size_t str_size(struct str *str);
+
+HASH TABLES
+===========
+
+    Hash table is use to store/retrieve items index by strings.
+
+    struct htable {};
+    int htable_init(struct htable *table);
+    int htable_get(struct htable *table, const char *key, void **value);
+    int htable_set(struct htable *table, const char *key, void *value);
+    int htable_free(struct htable *table);
+    size_t htable_size(struct htable *htable);
+
+RECURSIONS
+==========
+
+    Recursions is an ALGORITHM which have OPERATIONS group into two cases:
+    call itself or not.
+
+    Here is general example about RECURSIONS ALGORITHM:
+
+        Name: general_fn
+        Input: number
+        Output: number
+        Operation:
+            case 1: return NUMBER
+            case 2: general_fn(number)
+
+    Look for specific example, calculate factorial of n.
+    Because n! = n(n - 1)! with n > 1 and 1! = 1, so:
+
+        Name: factorial
+        Input: Number called n
+        Output: Factorial of n
+        Operations:
+            if (n == 1):
+                return 1
+            else
+                return n * factorial(n - 1)
+
+RECURSION BACKTRACKING
+======================
