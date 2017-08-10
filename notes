@@ -12,7 +12,7 @@ TABLE OF CONTENTS
     Algorithm
     Algorithm's complexity
     Big-O
-	ADT
+    ADT
     Vectors
     Grids
     Strings
@@ -171,12 +171,10 @@ BIG-O
 ADT
 ===
 
-	ADT is Abstract Data Type. It describes programming interfaces, includes
-	INPUT_DATA, OUTPUT_DATA corresspond with input and output of ALGORITHM.
-	However, it doesn't specifies OPERATIONS. People is free to implements
-	ADT.
+    ADT is Abstract Data Type. It describes programming interfaces, includes
+    INPUT_DATA, OUTPUT_DATA corresspond with input and output of ALGORITHM.
+    However, it doesn't specifies OPERATIONS. People is free to implements
+    ADT.
 
 VECTORS
 =======
-
-	
