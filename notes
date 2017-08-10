@@ -1,6 +1,6 @@
 INDEXS
 ======
-    
+
     Summary of Abtract Data Types and Algorithm. However, it describes some
     concepts to clear contents.
 
@@ -76,7 +76,7 @@ DATA
     Spanish version with same INFORMATION above:
 
        nombre: kevin leptons
-       género: masculino 
+       género: masculino
 
        <by translate.google.com>
 
@@ -88,11 +88,11 @@ ALGORITHM
         Input: describes source DATA
         Output: describes destination DATA
         Operations: describes how to get destination DATA from source DATA
-    
+
     For examples, here is ALGORITHM to find person with name:
 
         Input: List of person
-        Output: 
+        Output:
             On found return first person who have name
             On not found return NOT_FOUND
         Operations:
@@ -119,7 +119,7 @@ ALGORITHM'S COMPLEXITY
     of PRIMITIVE_OPERATIONS. PRIMITIVE_OPERATIONS applies for operations with
     numbers, include: ADD, SUB, MUL, DIV, ASN, >, >=, <, <=, ==. Binary
     numbers have more PRIMITIVE_OPERATIONS, include: SHIFT, AND, OR, NOR, XOR.
-    Quanlity of each PRIMITIVE_OPERATIONS is one. 
+    Quanlity of each PRIMITIVE_OPERATIONS is one.
 
     DATA_AMOUNT is quantitive of DATA, any DATA is quantitive. It is number of
     element of data. In this case, it is number of element of input data.
@@ -134,8 +134,8 @@ ALGORITHM'S COMPLEXITY
 				total = total + input[i]			// 1 + 1
             return total
 
-    Complexity of above ALGORITHM is: 
-    
+    Complexity of above ALGORITHM is:
+
         f(n) = 1 + 1 + n(1 + 1)(1 + 1)
              = 4n + 2
 
@@ -147,8 +147,8 @@ BIG-O
     of constants and chose biggest factor and it is BIG-O.
 
 	With complex algorithms, get extract ALGORITHM_COMPLEXITY
-    function is hard or depend on other factors than DATA_AMOUNT. Best way 
-	is use worst case of loops, strip for constants to get worst 
+    function is hard or depend on other factors than DATA_AMOUNT. Best way
+	is use worst case of loops, strip for constants to get worst
 	ALGORITHM_COMPLEXITY, then get Big-O from that function.
 
 	For example, here is ALGORITHM to sort an list of number by increasing.
@@ -185,11 +185,65 @@ ADT
 
     Why ADT is useful?. Because:
 
-        - It is use to work with many DATA in real world
-        - It is simple to use and understand than do from scratch
+        - It represents for many INFORMATION in real world
+        - It is more simple to write than do from scratch
+        - It is more simple to read than none ADT
 
 ARRAYS
 ======
 
+    ARRAYS use to store/retrieve items, index by sequence numbers from zero
+    and size of ARRAY can not be change.
+
+    struct array {};
+    int array_init(struct array *array, size_t size);
+    int array_set(struct array *array, size_t index, void *value);
+    int array_get(struct array *array, size_t index, void **value);
+    int array_size(struct array *array);
+    int array_free(struct array *array);
+
+    That is programming interfaces for ARRAY. However, C provide built-in
+    ARRAY and people always use it instead of implement ARRAY.
+
+    ======================================  =================================
+    ARRAY interfaces                        C array interfaces
+    ======================================  =================================
+    struct array and array_init()           type array[size]
+    array_set()                             array[index] = value
+    array_get()                             value = array[index]
+    array_size()                            sizeof(array) / sizeof(type)
+    array_free()                            automatic after exit stack
+    ======================================  =================================
+
 VECTORS
 =======
+
+    Vector is use to store/retrieve items, index by sequence numbers from 0.
+
+    struct vector {};
+    int vector_init(struct vector *vector);
+    int vector_add(struct vector *vector, void *value);
+    int vector_ins(struct vector *vector, size_t index, void *value);
+    int vector_del(struct vector *vector, size_t index);
+    int vector_get(struct vector *vector, size_t index, void **value);
+    int vector_free(struct vector *vector);
+
+STACKS
+======
+
+    Stacks is use to store items and retrieve by first in last out order.
+
+    struct stack {};
+    int stack_init(struct stack *stack);
+    int stack_push(struct stack *stack, void *value);
+    int stack_pop(struct stack *stack, void **value);
+    int stack_top(struct stack *stack, void **value);
+    int stack_free(struct stack *stack);
+
+QUEUES
+======
+
+    Queues is use to store items and retrieve by first in first out order.
+
+    struct queue {};
+    int struct_init(struct queue *queue);
