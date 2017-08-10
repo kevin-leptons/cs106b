@@ -13,6 +13,7 @@ TABLE OF CONTENTS
     Algorithm's complexity
     Big-O
     ADT
+    Arrays
     Vectors
     Grids
     Strings
@@ -175,6 +176,20 @@ ADT
     INPUT_DATA, OUTPUT_DATA corresspond with input and output of ALGORITHM.
     However, it doesn't specifies OPERATIONS. People is free to implements
     ADT.
+
+    It is possible to specify ADT by any things which can describes it.
+    However, better ADT should be specify by an programming language and
+    paragraphs. If possible, images is additional to help people easy to
+    understand about ADT. In next sections, C language is use to describle
+    ADT.
+
+    Why ADT is useful?. Because:
+
+        - It is use to work with many DATA in real world
+        - It is simple to use and understand than do from scratch
+
+ARRAYS
+======
 
 VECTORS
 =======
