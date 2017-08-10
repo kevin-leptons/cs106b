@@ -19,21 +19,23 @@ TABLE OF CONTENTS
     Queues
     Grids
     Strings
-    Hash table
+    Maps
+    Linked Lists
+    Trees
+    Binary Heaps - Priority Queues
+    Binary Search Trees
+    Graphs
+
     Recursion
     Recursive Backstacking
     Exhaustive search
     Sorting
-    Linked Lists
-    Binary Heaps
-    Trees
-    Binary Search Trees
-    Graphs
     Hashing
     DFS
     BFS
     Dijktra
     A*
+
     Skip Lists
     Bloom Filters
 
@@ -292,17 +294,19 @@ STRINGS
     struct str * str_clone(struct str *str);
     size_t str_size(struct str *str);
 
-HASH TABLES
-===========
+MAPS
+====
 
-    Hash table is use to store/retrieve items index by strings.
+    MAPS is use to store/retrieve items index by key. Key can be any type,
+    however any type can convert into string. Here are MAPS with string key:
 
-    struct htable {};
-    int htable_init(struct htable *table);
-    int htable_get(struct htable *table, const char *key, void **value);
-    int htable_set(struct htable *table, const char *key, void *value);
-    int htable_free(struct htable *table);
-    size_t htable_size(struct htable *htable);
+    struct map {};
+    int map_init(struct map *map);
+    int map_get(struct map *map, const char *key, void **value);
+    int map_set(struct map *map, const char *key, void *value);
+    int map_free(struct map *map);
+    size_t map_size(struct map *map);
+    struct vector * map_keys(struct map *map);
 
 RECURSIONS
 ==========
