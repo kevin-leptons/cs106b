@@ -20,6 +20,7 @@ TABLE OF CONTENTS
     Grids
     Strings
     Maps
+
     Linked Lists
     Trees
     Binary Heaps - Priority Queues
@@ -307,6 +308,31 @@ MAPS
     int map_free(struct map *map);
     size_t map_size(struct map *map);
     struct vector * map_keys(struct map *map);
+
+LINKED LIST
+===========
+
+    LINKED_LIST data structure is use to store/retrieve items by references.
+    Each item havs two neighbours: next and prev. Depend on using of
+    LINKED_LIST, an item has references to next, prev or both neigbours.
+    LINKED_LIST is use to implement STACK and QUEUE.
+    Here is some type of LINKED_LIST.
+
+    struct lklist {
+        struct lklist *next;
+        struct lklist *prev;
+        // other properties...
+    };
+
+    struct lklist_fw {
+        struct lklist *next;
+        // other properties...
+    };
+
+    struct lklist_bk {
+        struct lklist *prev;
+        // other properties...
+    }
 
 RECURSIONS
 ==========
