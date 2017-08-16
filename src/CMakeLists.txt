@@ -1,5 +1,6 @@
 file(GLOB CS106B_SRC_FILES lib/*.c)
 add_library(cs106-slave SHARED ${CS106B_SRC_FILES})
+target_link_libraries(cs106-slave equeue)
 
 find_package(OpenGL REQUIRED)
 

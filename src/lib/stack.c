@@ -55,14 +55,14 @@ int stack_copy(struct stack *dest, struct stack *src)
 
     stack_free(dest, false);
     if (stack_init(dest))
-        goto ERROR;
+        goto error;
 
     new_item = &dest->top;
     dest->size = src->size;
     for (item = src->top; item != NULL; item = item->next) {
         *new_item = malloc(sizeof(**new_item));
         if (*new_item == NULL)
-            goto ERROR;
+            goto free_dest;
         (*new_item)->data = item->data;
         (*new_item)->next = NULL;
         new_item = &(*new_item)->next;
@@ -70,10 +70,9 @@ int stack_copy(struct stack *dest, struct stack *src)
 
     return 0;
 
-ERROR:
-    if (new_item != NULL)
-        free(new_item);
+free_dest:
     stack_free(dest, false);
+error:
     return -1;
 }
 
@@ -83,18 +82,18 @@ struct stack * stack_clone(struct stack *src)
 
     new_stack = malloc(sizeof(*new_stack));
     if (new_stack == NULL)
-        return NULL;
+        goto error;
     if (stack_init(new_stack))
-        goto ERROR;
+        goto free_new_stack;
 
     if (stack_copy(new_stack, src))
-        goto ERROR;
+        goto free_new_stack;
 
     return new_stack;
 
-ERROR:
-    if (new_stack != NULL)
-        free(new_stack);
+free_new_stack:
+    free(new_stack);
+error:
     return NULL;
 }
 

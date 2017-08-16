@@ -17,13 +17,14 @@ TABLE OF CONTENTS
     Vectors
     Stacks
     Queues
+    Priority Queues
     Grids
     Strings
     Maps
 
     Linked Lists
     Trees
-    Binary Heaps - Priority Queues
+    Binary Heaps
     Binary Search Trees
     Graphs
 
@@ -312,27 +313,88 @@ MAPS
 LINKED LIST
 ===========
 
-    LINKED_LIST data structure is use to store/retrieve items by references.
-    Each item havs two neighbours: next and prev. Depend on using of
-    LINKED_LIST, an item has references to next, prev or both neigbours.
-    LINKED_LIST is use to implement STACK and QUEUE.
-    Here is some type of LINKED_LIST.
+    It is data structure is use to store/retrieve items by references. Each
+    item havs two neighbours: next and prev. Depend on using of LINKED_LIST,
+    an item has references to next, prev or both neigbours.  LINKED_LIST is
+    use to implement STACK and QUEUE.  Here is some type of LINKED_LIST.
 
-    struct lklist {
+    struct lklist {                     // two way linked
         struct lklist *next;
         struct lklist *prev;
         // other properties...
     };
 
-    struct lklist_fw {
+    struct lklist_fw {                  // forward linked
         struct lklist *next;
         // other properties...
     };
 
-    struct lklist_bk {
+    struct lklist_bk {                  // back linked
         struct lklist *prev;
         // other properties...
     }
+
+TREES
+=====
+
+    It is data structure and is defined by recursion. Tree can be empty or
+    not. If tree is not empty, it includes references to children tree.
+    Children tree can be empty, it mean that tree have not children. Depend on
+    using, tree can be different. Here is some types:
+
+    struct tree_bin {                   // binary tree
+        struct tree *left;
+        struct tree *right;
+        // other properties of tree...
+    };
+
+    struct tree_tnr {                   // ternary tree
+        struct tree_tnr *left;
+        struct tree_tnr *mid;
+        struct tree_tnr *right;
+        // other properties of tree...
+    };
+
+    struct tree {                       // n-ary tree
+        struct tree *children;
+        // other properties of tree...
+    };
+
+
+BINARY_HEAPS
+============
+
+    It is binary tree with more specification. If tree is mark by order from
+    tree, left child and right child, left child and right child MUST be fills
+    before create new children of prev tree. Each tree contains an number
+    called tree's value. Binary tree divides into two types. First,
+    SMALLEST_BINARY_TREES, in that tree, tree's value MUST smaller or equal
+    children tree's value. Second, BIGGEST_BINARY_TREES, in that tree, tree's
+    value MUST bigger or equal children tree's value. To ensure specification
+    is correct, two ALGORITHMS are provides:
+
+    struct bheap {};
+    int bheap_add(struct bheap *heap, size_t value);
+    int hheap_del(struct bheap *heap, struct bheap *node);
+
+BINARY_SEARCH_TREES
+===================
+
+    It is binary tree with more specific. Each tree contaisn an number called
+    tree's value. Tree's value of left trees MUST smaller than tree's value
+    and tree's value of right tree MUST bigger than tree's value. To ensure
+    specificaion is correct four ALGORITHMS are provides:
+
+    struct bst {};
+    int bst_add(struct bst *tree, size_t value);
+    int bst_del(struct bst *tree, struct bst *node);
+    size_t bst_min(struct bst *tree);
+    size_t bst_max(struct bst *tree);
+
+GRAPHS
+======
+
+    
 
 RECURSIONS
 ==========

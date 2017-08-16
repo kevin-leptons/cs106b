@@ -30,7 +30,7 @@ int vector_insert(struct vector *vector, size_t index, void *data)
             return -1;
 
     for (i = vector->size; i > index; i--)
-        *(vector->front + i) = *(vector->front + i - 1);
+        vector->front[i] = vector->front[i - 1];
 
     (vector->front + index)->data = data;
     vector->size += 1;
