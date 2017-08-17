@@ -1,13 +1,20 @@
-INDEXS
-======
+SYNOPSIS
+========
 
-    Summary of Abtract Data Types and Algorithm. However, it describes some
-    concepts to clear contents.
+    Summary of Abtract Data Types and Algorithm.
+
+    Although main content of this notes is Abtract Data Types and Algorithm,
+    it is necessary to describe some concepts related with PHYSICAL_SCIENCE
+    and use that knowledge to specific Abstract Data Types and Algorithm.
+    That way make clear view than only specific any things in abstract.
+    This is addition of Kevin Leptons, not a part of CS106B.
+
+    Kevin Leptons <kevin.leptons@gmail.com>
 
 TABLE OF CONTENTS
 =================
 
-    Meterial
+    Matter
     Information
     Data
     Data storage
@@ -45,10 +52,26 @@ TABLE OF CONTENTS
     Skip Lists
     Bloom Filters
 
+MATTER
+======
+
+    MATTER is everything. Everything is MATTER. That is simple definition of
+    MATTER. Your book is MATTER, your hair is MATTER, yourself is MATTER,
+    environment around you is MATTER. In real, MATTER's definition is not
+    complete because human still have enough knowledge about it.
+
+    Do you feel that we are far from CS106B? Yes, we do. Let's imagine that
+    we are in border of Sun System, CS106B is the Sun and we need to pass
+    through each sub-plan before we are in the Sun.
+
+    Why do we should care about MATTER?. At all, human is MATTER, everything
+    which human invents is MATTER and it interacts together. COMPUTER and
+    COMPUTER_PROGRAMMING is the same.
+
 INFORMATION
 ===========
 
-    It describe properties of things. It is impossible to show "How is
+    It describe properties of MATTER. It is impossible to show "How is
     INFORMATION look like?" because INFORMATION is abstract concepts. For
     example, two lines below describes a person then meaning of two lines is
     INFORMATION:
@@ -57,20 +80,20 @@ INFORMATION
         gender: male
 
     As above, name and gender describes for a person, but it is not all. In
-    real world, a small thing to a big thing also contains many INFORMATION
-    and human still not able to know INFORMATION is limited or not. Why?,
-    because Physical Science always find new particulate matter, smaller and
-    they can not proof that "There are smallest particulate matter". Computer
-    Science knows that INFORMATION is big and find the way to work with it.
+    real world, MATTER contains many INFORMATION and human still not able to
+    know INFORMATION is limited or not. Why?, because PHYSICAL_SCIENCE always
+    find new PATRICULATE_MATTER, smaller and can not proof that
+    "There are smallest PATRICULATE_MATTER". COMPUTER_SCIENCE knows that
+    INFORMATION is big and find the way to work with it.
 
     Don't misstake INFORMATION and DATA. As above example, meaning of two
     lines is INFORMATION, not two lines. Two lines is DATA and will be present
-    below.
+    in next section.
 
 DATA
 ====
 
-    It is things represents for INFORMATION. Good news, it is able to show
+    It represents for INFORMATION. Good news, it is able to show
     "How is DATA look like?". For example, with name and gender of a person,
     human use writting language to represent to that's INFORMATION, and it is
     DATA:
@@ -82,12 +105,17 @@ DATA
     alphabet. And of course, characters is able to see.
 
     INFORMATION can be represents by more than one DATA. Here is DATA in
-    Spanish version with same INFORMATION above:
+    Spanish version represent for same INFORMATION above:
 
        nombre: kevin leptons
        género: masculino
 
        <by translate.google.com>
+
+DATA_STORAGE
+============
+
+    
 
 DATA_STRUCTURES
 ===============
