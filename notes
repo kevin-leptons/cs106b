@@ -7,13 +7,16 @@ INDEXS
 TABLE OF CONTENTS
 =================
 
+    Meterial
     Information
     Data
-    Data structure
+    Data storage
+    Data structures
     Algorithm
     Algorithm's complexity
     Big-O
     ADT
+    AD
 
     Arrays
     Vectors
@@ -85,6 +88,9 @@ DATA
        género: masculino
 
        <by translate.google.com>
+
+DATA_STRUCTURES
+===============
 
 ALGORITHM
 =========
