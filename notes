@@ -23,7 +23,7 @@ TABLE OF CONTENTS
     Algorithm's complexity
     Big-O
     ADT
-    AD
+    DT
 
     Arrays
     Vectors
@@ -33,12 +33,12 @@ TABLE OF CONTENTS
     Grids
     Strings
     Maps
+    Linked Lists
     Trees
     Binary Heaps
     Binary Search Trees
     Graphs
 
-    Linked Lists
     Recursion
     Recursive Backstacking
     Exhaustive search
@@ -93,16 +93,16 @@ INFORMATION
 DATA
 ====
 
-    It represents for INFORMATION. Good news, it is able to show
-    "How is DATA look like?". For example, with name and gender of a person,
-    human use writting language to represent to that's INFORMATION, and it is
-    DATA:
+    It is MATTER which arrange follow set of rules to represents for
+    INFORMATION. Good news, DATA is MATTER and it is able tow show "How DATA
+    look like?". For example, with name and gender of a person, human use
+    writting language to represent to that's INFORMATION, and it is DATA:
 
         name: kevin leptons
         gender: male
 
     Now, above DATA have 19 + 12 = 31 characters. Characters is English
-    alphabet. And of course, characters is able to see.
+    alphabet, rules is English. And of course, characters is able to see.
 
     INFORMATION can be represents by more than one DATA. Here is DATA in
     Spanish version represent for same INFORMATION above:
@@ -115,10 +115,21 @@ DATA
 DATA_STORAGE
 ============
 
-    
+    It is MATTER which use to store DATA. If write two lines information about
+    a person above into paper, paper is DATA_STORAGE. If write that lines into
+    stone, stone is DATA_STORAGE.
 
 DATA_STRUCTURES
 ===============
+
+    It is concepts includes location of DATA in DATA_STORAGE and relationship
+    between DATA.
+
+    If you have 10 empty papers, then you decide to write table content in
+    first paper; with each of rest of 9 papers, you decide to describe
+    you, your mother, your father, your brother, your sister, your house,
+    your dog, your garden, one of your boy and girl friend. That is
+    DATA_STRUCTURE.
 
 ALGORITHM
 =========
@@ -145,8 +156,8 @@ ALGORITHM
     such as paragraphs, images, sound or videos and it describes INPUT_DATA,
     OUPUT_DATA, OPERATIONS.
 
-ALGORITHM'S COMPLEXITY
-======================
+ALGORITHM_COMPLEXITY
+====================
 
     ALGORITHM_COMPLEXITY is function show "How OPERATION_AMOUNT change while
     input's DATA_AMOUNT change?" and applies for number ALGORITHM.
@@ -179,7 +190,7 @@ ALGORITHM'S COMPLEXITY
         f(n) = 1 + 1 + n(1 + 1)(1 + 1)
              = 4n + 2
 
-BIG-O
+BIG_O
 =====
 
     BIG-O is notation show "What biggest factor affect to
@@ -209,17 +220,21 @@ BIG-O
         Strip all of constants: g(n) = n^2 - n
         Chose biggest factor: BIG-0 = O(n^2)
 
+DT
+==
+
+    DT is Data Types. It is wrap of DATA_STRUCTURE and related ALGORITHMS.
+
 ADT
 ===
 
-    ADT is Abstract Data Type. It describes programming interfaces, includes
-    INPUT_DATA, OUTPUT_DATA corresspond with input and output of ALGORITHM.
-    However, it doesn't specifies OPERATIONS. People is free to implements
-    ADT.
+    ADT is Abstract Data Type. It only specify INPUT and OUTPUT of ALGORITHM.
+    So, it doesn't specifies OPERATIONS. People is free to use DATA_STRUCTURES
+    and ALGORITHMS to implemnt specification of ADT.
 
     It is possible to specify ADT by any things which can describes it.
     However, better ADT should be specify by an programming language and
-    paragraphs. If possible, images is additional to help people easy to
+    text. If possible, images is additional to help people easy to
     understand about ADT. In next sections, C language is use to describle
     ADT.
 
@@ -229,8 +244,8 @@ ADT
         - It is more simple to write than do from scratch
         - It is more simple to read than none ADT
 
-ARRAYS
-======
+ARRAYS - ADT
+============
 
     ARRAYS use to store/retrieve items, index by sequence numbers from zero
     and size of ARRAY can not be change.
@@ -255,8 +270,8 @@ ARRAYS
     array_free()                            automatic after exit stack
     ======================================  =================================
 
-VECTORS
-=======
+VECTORS - ADT
+=============
 
     Vector is use to store/retrieve items, index by sequence numbers from 0.
 
@@ -269,8 +284,8 @@ VECTORS
     int vector_free(struct vector *vector);
     size_t vector_size(struct vector *vector);
 
-STACKS
-======
+STACKS - ADT
+============
 
     Stacks is use to store items and retrieve by first in last out order.
 
@@ -282,8 +297,8 @@ STACKS
     int stack_free(struct stack *stack);
     size_t stack_size(struct stack *stack);
 
-QUEUES
-======
+QUEUES - ADT
+============
 
     Queues is use to store items and retrieve by first in first out order.
 
@@ -295,8 +310,8 @@ QUEUES
     int queue_free(struct queue *queue);
     size_t queue_size(struct queue *queue);
 
-GRIDS
-=====
+GRIDS - ADT
+===========
 
     Grid is use to store/retrieve items with two indexes, row and col.
     Size of grid is not automatic change, it require specific call to do
@@ -311,8 +326,8 @@ GRIDS
     size_t grid_row_size(struct grid *grid);
     size_t grid_col_size(struct grid *grid);
 
-STRINGS
-=======
+STRINGS - ADT
+=============
 
     String is use to work with sequence characters.
 
@@ -331,8 +346,8 @@ STRINGS
     struct str * str_clone(struct str *str);
     size_t str_size(struct str *str);
 
-MAPS
-====
+MAPS - ADT
+==========
 
     MAPS is use to store/retrieve items index by key. Key can be any type,
     however any type can convert into string. Here are MAPS with string key:
@@ -345,13 +360,14 @@ MAPS
     size_t map_size(struct map *map);
     struct vector * map_keys(struct map *map);
 
-LINKED LIST
-===========
+LINKED_LIST - DATA_STRUCTURE
+============================
 
-    It is data structure is use to store/retrieve items by references. Each
-    item havs two neighbours: next and prev. Depend on using of LINKED_LIST,
-    an item has references to next, prev or both neigbours.  LINKED_LIST is
-    use to implement STACK and QUEUE.  Here is some type of LINKED_LIST.
+    It is list of items includes front item, back item and mid items. Each
+    item connect together by reference by rules: first and back item is
+    connect with one item, mid items is connect with two items.
+
+    Have more than one type of LINKED_LIST. Here are examples:
 
     struct lklist {                     // two way linked
         struct lklist *next;
@@ -369,18 +385,14 @@ LINKED LIST
         // other properties...
     }
 
-TREES
-=====
+TREES - DATA_STRUCTURE
+======================
 
-    It is data structure and is defined by recursion. Tree can be empty or
-    not. If tree is not empty, it includes references to children tree.
-    Children tree can be empty, it mean that tree have not children. Depend on
-    using, tree can be different. Here is some types:
+    It is defined by recursion. Tree can be empty or not. If tree is not
+    empty, it includes references to children tree. Children tree can be
+    empty, it mean that tree have not children. 
 
-    struct tree {};
-    int tree_init(struct tree *t);
-    int tree_cadd(struct tree *t, struct tree *child);
-    int tree_cdel(struct tree *t, struct tree *child);
+    Have more than one type of TREES:
 
     struct tree_bin {                   // binary tree
         struct tree *left;
@@ -401,13 +413,13 @@ TREES
     };
 
 
-BINARY_HEAPS
-============
+BINARY_HEAPS - DT
+=================
 
-    It is binary tree with more specification. If tree is mark by order from
-    tree, left child and right child, left child and right child MUST be fills
-    before create new children of prev tree. Each tree contains an number
-    called tree's value. Binary tree divides into two types. First,
+    It is BINARY_TREE with more specification. If tree and children are mark
+    by order from tree, left child and right child, left child and right child
+    MUST be fills before create new children of prev tree. Each tree contains
+    an number called tree's value. Binary tree divides into two types. First,
     SMALLEST_BINARY_TREES, in that tree, tree's value MUST smaller or equal
     children tree's value. Second, BIGGEST_BINARY_TREES, in that tree, tree's
     value MUST bigger or equal children tree's value. To ensure specification
@@ -417,8 +429,8 @@ BINARY_HEAPS
     int bheap_add(struct bheap *heap, size_t value);
     int hheap_del(struct bheap *heap, struct bheap *node);
 
-BINARY_SEARCH_TREES
-===================
+BINARY_SEARCH_TREES - DT
+========================
 
     It is binary tree with more specific. Each tree contaisn an number called
     tree's value. Tree's value of left trees MUST smaller than tree's value
@@ -431,8 +443,8 @@ BINARY_SEARCH_TREES
     size_t bst_min(struct bst *tree);
     size_t bst_max(struct bst *tree);
 
-GRAPHS
-======
+GRAPHS - ADT
+============
 
     It is concept contains set of nodes and edges. Each edges is define by
     two nodes. With UNDIRECTED_GRAPHS, two nodes of edges is not order. with
@@ -457,8 +469,8 @@ GRAPHS
     int graph_find(struct graph *g, size_t begin, size_T end, vector *path);
     int graph_walk(struct graph *g, void (*callback)(struct graph_vertex *v));
 
-RECURSIONS
-==========
+RECURSIONS - ALGORITHM
+======================
 
     Recursions is an ALGORITHM which have OPERATIONS group into two cases:
     call itself or not.
@@ -484,5 +496,7 @@ RECURSIONS
             else
                 return n * factorial(n - 1)
 
-RECURSION BACKTRACKING
-======================
+RECURSION_BACKTRACKING - ALGORITHM
+==================================
+
+     
