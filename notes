@@ -390,7 +390,7 @@ TREES - DATA_STRUCTURE
 
     It is defined by recursion. Tree can be empty or not. If tree is not
     empty, it includes references to children tree. Children tree can be
-    empty, it mean that tree have not children. 
+    empty, it mean that tree have not children.
 
     Have more than one type of TREES:
 
@@ -499,4 +499,20 @@ RECURSIONS - ALGORITHM
 RECURSION_BACKTRACKING - ALGORITHM
 ==================================
 
-     
+    It is ABSTRACT_ALGORITHM and it is use to find set of solution start
+    from candidate C:
+
+    Name: backtrack
+    Input: candidate C
+    Output: Set of solutions S
+    Operation:
+        S = empty
+        if accept(C):
+            for c in neigbour(C):
+                S = S union backtrack(c)
+        return S
+
+EXHAUSTIVE_SEARCH - ALGORITHM
+=============================
+
+    
