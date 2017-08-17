@@ -9,10 +9,12 @@ TABLE OF CONTENTS
 
     Information
     Data
+    Data structure
     Algorithm
     Algorithm's complexity
     Big-O
     ADT
+
     Arrays
     Vectors
     Stacks
@@ -21,13 +23,12 @@ TABLE OF CONTENTS
     Grids
     Strings
     Maps
-
-    Linked Lists
     Trees
     Binary Heaps
     Binary Search Trees
     Graphs
 
+    Linked Lists
     Recursion
     Recursive Backstacking
     Exhaustive search
@@ -342,6 +343,11 @@ TREES
     Children tree can be empty, it mean that tree have not children. Depend on
     using, tree can be different. Here is some types:
 
+    struct tree {};
+    int tree_init(struct tree *t);
+    int tree_cadd(struct tree *t, struct tree *child);
+    int tree_cdel(struct tree *t, struct tree *child);
+
     struct tree_bin {                   // binary tree
         struct tree *left;
         struct tree *right;
@@ -394,7 +400,28 @@ BINARY_SEARCH_TREES
 GRAPHS
 ======
 
-    
+    It is concept contains set of nodes and edges. Each edges is define by
+    two nodes. With UNDIRECTED_GRAPHS, two nodes of edges is not order. with
+    DIRECTED_GRAPH, two nodes of edges is order and called START_NODE and
+    END_NODE.
+
+    struct graph_vertex {};
+    struct graph_edge {};
+    struct graph {};
+    int graph_init(struct graph *g);
+
+    int graph_vadd(struct graph *g, size_t id);
+    int graph_vdel(struct graph *g, size_t id);
+    struct graph_vertex * graph_vget(struct graph *g, size_t id);
+    struct pset * graph_vertexs(struct graph *g);
+
+    int graph_eadd(struct graph *g, size_t begin, size_t end);
+    int graph_edel(struct graph *g, size_t begin, size_t end);
+    struct graph_edge * graph_eget(struct graph *g, size_t begin , size_t end);
+    struct pset *graph_edges(struct graph *g);
+
+    int graph_find(struct graph *g, size_t begin, size_T end, vector *path);
+    int graph_walk(struct graph *g, void (*callback)(struct graph_vertex *v));
 
 RECURSIONS
 ==========
