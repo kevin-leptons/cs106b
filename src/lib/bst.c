@@ -25,7 +25,7 @@ int bst_add(struct bst **tree, size_t key, void *value)
                 t = t->left;
                 continue;
             }
-            t->left = *new_tree;
+            t->left = new_tree;
             break;
         } else {
             if (t->right != NULL) {
