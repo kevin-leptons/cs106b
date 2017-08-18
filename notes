@@ -41,14 +41,14 @@ TABLE OF CONTENTS
 
     Recursion
     Recursive Backstacking
-    Exhaustive search
     Sorting
-    Hashing
+
     DFS
     BFS
     Dijktra
     A*
 
+    Hashing
     Skip Lists
     Bloom Filters
 
@@ -511,8 +511,3 @@ RECURSION_BACKTRACKING - ALGORITHM
             for c in neigbour(C):
                 S = S union backtrack(c)
         return S
-
-EXHAUSTIVE_SEARCH - ALGORITHM
-=============================
-
-    
