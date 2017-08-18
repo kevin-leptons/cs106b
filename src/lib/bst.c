@@ -7,13 +7,34 @@ static struct bst * _bst_mktree(size_t key, void *value);
 int bst_add(struct bst **tree, size_t key, void *value)
 {
     struct bst *new_tree;
+    struct bst *t;
 
     new_tree = _bst_mktree(key, value);
     if (new_tree == NULL)
         goto mktree_err;
+
     if (*tree == NULL) {
         *tree = new_tree;
-    } else {
+        return 0;
+    }
+
+    t = *tree;
+    for (;;) {
+        if (key <= t->key) {
+            if (t->left != NULL) {
+                t = t->left;
+                continue;
+            }
+            t->left = *new_tree;
+            break;
+        } else {
+            if (t->right != NULL) {
+                t = t->right;
+                continue;
+            }
+            t->right = new_tree;
+            break;
+        }
     }
 
     return 0;
