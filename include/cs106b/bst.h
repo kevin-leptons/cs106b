@@ -14,8 +14,8 @@ struct bst
 
 int bst_add(struct bst **tree, size_t key, void *value);
 int bst_del(struct bst **tree, size_t key);
-struct bst * bst_min(struct bst *tree);
-struct bst * bst_max(struct bst *tree);
+size_t bst_min(struct bst *tree);
+size_t bst_max(struct bst *tree);
 void bst_free(struct bst **tree);
 
 #endif

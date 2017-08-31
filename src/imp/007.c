@@ -67,8 +67,6 @@ struct rgb
 };
 
 static const struct rgb COLOR_GREEN = {0.0f, 1.0f, 0.0f, 1.0f};
-static const struct rgb COLOR_RED = {1.0f, 0.0f, 0.0f, 1.0f};
-static const struct rgb COLOR_BLUE = {0.0f, 0.0f, 1.0f, 1.0f};
 static const struct rgb COLOR_WHITE = {1.0f, 1.0f, 1.0f, 1.0f};
 
 static int _point2d_map_init(struct point2d_map *map,
