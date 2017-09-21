@@ -13,7 +13,7 @@ int bst_add(struct bst **tree, size_t key, void *value)
 
     new_tree = _bst_mktree(key, value);
     if (new_tree == NULL)
-        goto mktree_err;
+        return -1;
 
     if (*tree == NULL) {
         *tree = new_tree;
@@ -40,10 +40,6 @@ int bst_add(struct bst **tree, size_t key, void *value)
     }
 
     return 0;
-
-mktree_err:
-    cs106berr_emit();
-    return -1;
 }
 
 int bst_del(struct bst **tree, size_t key)
@@ -156,17 +152,13 @@ static struct bst * _bst_mktree(size_t key, void *value)
 
     new_tree = malloc(sizeof(*new_tree));
     if (new_tree == NULL)
-        goto out_of_mem;
+        return NULL;
     new_tree->key = key;
     new_tree->value = value;
     new_tree->left = NULL;
     new_tree->right = NULL;
 
     return new_tree;
-
-out_of_mem:
-    cs106berr_push(CS106BE_OUTMEM);
-    return NULL;
 }
 
 static struct bst * _bst_lookup(struct bst *tree, size_t key,
@@ -175,7 +167,7 @@ static struct bst * _bst_lookup(struct bst *tree, size_t key,
     struct bst *target;
 
     *in_parent = NULL;
-    for (target = tree, *in_parent = NULL;;) {
+    for (target = tree, *in_parent = NULL; target != NULL;) {
         if (target->key == key) {
             return target;
         } else if (target->key < key) {
@@ -187,5 +179,6 @@ static struct bst * _bst_lookup(struct bst *tree, size_t key,
         }
     }
 
+    espace_raise(CS106B_EKEY);
     return NULL;
 }

@@ -1,4 +1,5 @@
 #include <cs106b/vector.h>
+#include <cs106b/error.h>
 
 #define VECTOR_BSIZE 16
 #define VECTOR_ESIZE 2
@@ -22,8 +23,10 @@ int vector_insert(struct vector *vector, size_t index, void *data)
 {
     size_t i;
 
-    if (index > vector->size)
+    if (index > vector->size) {
+        espace_raise(CS106B_EINDEX);
         return -1;
+    }
 
     if (vector->size == vector->max_size)
         if (_vector_extend(vector) != 0)
@@ -54,30 +57,56 @@ int vector_remove(struct vector *vector, size_t index)
 {
     size_t i;
 
-    if (index >= vector->size)
+    if (index >= vector->size) {
+        espace_raise(CS106B_EINDEX);
         return -1;
+    }
 
     for (i = index + 1; i < vector->size; i++)
         *(vector->front + i - 1) = *(vector->front + i);
     vector->size -= 1;
 
     if (vector->size <  vector->max_size / 2)
-        _vector_narrow(vector);
+        if (_vector_narrow(vector))
+            return -1;
 
     return 0;
 }
 
 void * vector_at(struct vector *vector, size_t index)
 {
-    if (index >= vector->size)
+    if (index >= vector->size) {
+        espace_raise(CS106B_EINDEX);
         return NULL;
+    }
     return (vector->front + index)->data;
+}
+
+void * vector_get(struct vector *vector, size_t index)
+{
+    if (index >= vector->size) {
+        espace_raise(CS106B_EINDEX);
+        return NULL;
+    }
+    return vector->front[index].data;
+}
+
+int vector_set(struct vector *vector, size_t index, void *data)
+{
+    if (index >= vector->size) {
+        espace_raise(CS106B_EINDEX);
+        return -1;
+    }
+    vector->front[index].data = data;
+    return 0;
 }
 
 void *vector_end(struct vector *vector)
 {
-    if (vector->size == 0)
+    if (vector->size == 0) {
+        espace_raise(CS106B_EINDEX);
         return NULL;
+    }
     return vector_at(vector, vector->size - 1);
 }
 
@@ -87,8 +116,10 @@ int vector_copy(struct vector *dest, struct vector *src)
 
     vector_free(dest, false);
     dest->front = malloc(src->size * sizeof(struct vector_item));
-    if (dest->front == NULL)
+    if (dest->front == NULL) {
+        espace_raise(SYS_ENOMEM);
         return -1;
+    }
     dest->size = src->size;
     dest->max_size = src->size;
 
@@ -103,10 +134,11 @@ struct vector * vector_clone(struct vector *src)
     struct vector *new_vector;
 
     new_vector = malloc(sizeof(*new_vector));
-    if (new_vector == NULL)
+    if (new_vector == NULL) {
+        espace_raise(SYS_ENOMEM);
         return NULL;
-    if (vector_init(new_vector))
-        return NULL;
+    }
+    vector_init(new_vector);
 
     if (vector_copy(new_vector, src))
         goto ERROR;
@@ -144,9 +176,11 @@ static int _vector_extend(struct vector *vector)
         new_msize = vector->base_size;
     else
         new_msize = vector->max_size * vector->ext_size;
-    new_front = realloc(vector->front, new_msize * sizeof(struct vector_item));
-    if (new_front == NULL)
+    new_front = realloc(vector->front, new_msize * sizeof(*new_front));
+    if (new_front == NULL) {
+        espace_raise(SYS_ENOMEM);
         return -1;
+    }
 
     vector->front = new_front;
     vector->max_size = new_msize;
@@ -160,9 +194,12 @@ static int _vector_narrow(struct vector *vector)
     size_t new_msize;
 
     new_msize = vector->max_size / 2;
-    new_front = realloc(vector->front, new_msize * sizeof(struct vector_item));
-    if (new_front == NULL)
+    new_front = realloc(vector->front,
+                        new_msize * sizeof(struct vector_item));
+    if (new_front == NULL) {
+        espace_raise(SYS_ENOMEM);
         return -1;
+    }
 
     vector->front = new_front;
     vector->max_size = new_msize;
