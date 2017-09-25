@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <espace/error.h>
+#include <espace/sys.h>
 
 #include <cs106b/error.h>
 #include <cs106b/vector.h>
-#include <espace/error.h>
-#include <espace/sys.h>
+#include <cs106b/mem.h>
 
 #define NUM_ITEM 8
 
@@ -14,44 +15,50 @@ int main(int argc, char *argv[])
     size_t *data;
     size_t i;
 
-    printf("init: vector\n");
+    printf("vector_init()\n");
     vector_init(&vector);
 
+    // add items to vector
     for (i = 0; i < NUM_ITEM; i++) {
-        data = malloc(sizeof(*data));
-        if (data == NULL) {
-            espace_raise(SYS_ENOMEM);
-            exit_errx("malloc");
-        }
+        if (cs106b_malloc((void *) &data, sizeof(*data)))
+            goto error;
         *data = i;
         if (vector_add(&vector, data) != 0)
-            exit_errx("vector_add");
-        printf("add: vector <= %lu, size=%lu\n", *data, vector.size);
+            goto error;
+        printf("vector_add(%lu), size=%lu\n", *data, vector.size);
     }
 
+    // resize vector
+    if (vector_resize(&vector, 2 * NUM_ITEM))
+        goto error;
+    printf("vector_resize(%u), size=%zu\n", 2 * NUM_ITEM, vector.max_size);
+
+    // remove item from vector
     if (vector_remove(&vector, 4) != 0)
-        exit_errx("vector_remove");
-    printf("remove: vector[4]\n");
+        goto error;
+    printf("vector_remove(4)\n");
 
-    data = malloc(sizeof(*data));
-    if (data == NULL) {
-        espace_raise(SYS_ENOMEM);
-        exit_errx("malloc");
-    }
+    // insert item to vector
+    if (cs106b_malloc((void *) &data, sizeof(*data)))
+        goto error;
     *data  = 123;
     if (vector_insert(&vector, 0, data) != 0)
-        exit_errx("vector_insert");
-    printf("insert: vector[0] = %lu\n", *data);
+        goto error;
+    printf("vector_insert(0, %zu)\n", *data);
 
-    for (i = 0; i < NUM_ITEM; i++) {
-        data = (size_t*) vector_at(&vector, i);
-        if (data == NULL)
-            exit_errx("vector_at");
-        printf("at: vector[%lu] = %lu\n", i, *data);
+    // get items from vector
+    for (i = 0; i < vector.size; i++) {
+        if (vector_get(&vector, i, (void *) &data))
+            goto error;
+        printf("vector_get(%zu) %lu\n", i, *data);
     }
 
-    vector_free(&vector, true);
-    printf("free: vector\n");
-
+    // free vector
+    vector_free(&vector);
+    printf("vector_free()\n");
     return EXIT_SUCCESS;
+
+error:
+    fprintf(stderr, "Error: %s\n", espace->id);
+    return EXIT_FAILURE;
 }

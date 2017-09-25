@@ -13,10 +13,12 @@ COMPLEXITY
     fn                  best        worst
     ----------------------------------------
     vector_init()       O(1)        O(1)     
+    vector_resize()     O(n)        O(n)
+    vector_get()        O(1)        O(1)     
+    vector_set()        O(1)        O(1)     
     vector_insert()     O(1)        O(n)     
     vector_add()        O(1)        O(n)     
     vector_remove()     O(1)        O(n)     
-    vector_at()         O(1)        O(1)     
     vector_copy()       O(n)        O(n)
     vector_clone()      O(n)        O(n)
     vector_free()       O(1)        O(1)     
@@ -64,6 +66,7 @@ ERRORS
 
     CS106B_EINDEX
     SYS_ENOMEM
+    SYS_INVAL
 
 AUTHORS
 
@@ -91,15 +94,15 @@ struct vector
 };
 
 int vector_init(struct vector *vector);
+int vector_resize(struct vector *vector, size_t size);
+int vector_get(struct vector *vector, size_t index, void **value);
+int vector_set(struct vector *vector, size_t index, void *data);
 int vector_insert(struct vector *vector, size_t index, void *data);
 int vector_add(struct vector *vector, void *data);
 int vector_remove(struct vector *vector, size_t index);
-void *vector_at(struct vector *vector, size_t index);
-void *vector_get(struct vector *vector, size_t index);
-int vector_set(struct vector *vector, size_t index, void *data);
-void *vector_end(struct vector *vector);
+int vector_end(struct vector *vector, void **value);
 int vector_copy(struct vector *dest, struct vector *src);
-struct vector * vector_clone(struct vector *src);
-void vector_free(struct vector *vector, bool free_data);
+int vector_clone(struct vector **dest, struct vector *src);
+void vector_free(struct vector *vector);
 
 #endif

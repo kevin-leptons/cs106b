@@ -1,5 +1,7 @@
 #include <cs106b/vector.h>
+#include <string.h>
 #include <cs106b/error.h>
+#include <cs106b/mem.h>
 
 #define VECTOR_BSIZE 16
 #define VECTOR_ESIZE 2
@@ -10,12 +12,61 @@ static int _vector_narrow(struct vector *vector);
 
 int vector_init(struct vector *vector)
 {
+    if (vector == NULL) {
+        espace_raise(SYS_EINVAL);
+        return -1;
+    }
+
     vector->size = 0;
     vector->max_size = 0;
     vector->front = NULL;
     vector->base_size = VECTOR_BSIZE;
     vector->ext_size = VECTOR_ESIZE;
 
+    return 0;
+}
+
+int vector_resize(struct vector *vector, size_t max_size)
+{
+    struct vector_item *new_front;
+    size_t tmp_msize;
+
+    if (max_size == vector->max_size)
+        return 0;
+
+    tmp_msize = max_size * sizeof(struct vector_item);
+    if (cs106b_malloc((void *) &new_front, tmp_msize))
+        return -1;
+    memset(new_front, 0, tmp_msize);
+
+    if (vector->size > 0) {
+        vector->size = max_size < vector->size ? max_size : vector->size;
+        tmp_msize = vector->size * sizeof(struct vector_item);
+        memcpy(new_front, vector->front, tmp_msize);
+        free(vector->front);
+    }
+    vector->front = new_front;
+    vector->max_size = max_size;
+    return -1;
+}
+
+int vector_get(struct vector *vector, size_t index, void **value)
+{
+    if (index >= vector->size) {
+        espace_raise(CS106B_EINDEX);
+        return -1;
+    }
+    *value = vector->front[index].data;
+    return 0;
+}
+
+int vector_set(struct vector *vector, size_t index, void *data)
+{
+    if (index >= vector->size) {
+        espace_raise(CS106B_EINDEX);
+        return -1;
+    }
+    vector->front[index].data = data;
     return 0;
 }
 
@@ -73,48 +124,20 @@ int vector_remove(struct vector *vector, size_t index)
     return 0;
 }
 
-void * vector_at(struct vector *vector, size_t index)
-{
-    if (index >= vector->size) {
-        espace_raise(CS106B_EINDEX);
-        return NULL;
-    }
-    return (vector->front + index)->data;
-}
-
-void * vector_get(struct vector *vector, size_t index)
-{
-    if (index >= vector->size) {
-        espace_raise(CS106B_EINDEX);
-        return NULL;
-    }
-    return vector->front[index].data;
-}
-
-int vector_set(struct vector *vector, size_t index, void *data)
-{
-    if (index >= vector->size) {
-        espace_raise(CS106B_EINDEX);
-        return -1;
-    }
-    vector->front[index].data = data;
-    return 0;
-}
-
-void *vector_end(struct vector *vector)
+int vector_end(struct vector *vector, void **value)
 {
     if (vector->size == 0) {
         espace_raise(CS106B_EINDEX);
-        return NULL;
+        return -1;
     }
-    return vector_at(vector, vector->size - 1);
+    return vector_get(vector, vector->size - 1, value);
 }
 
 int vector_copy(struct vector *dest, struct vector *src)
 {
     size_t i;
 
-    vector_free(dest, false);
+    vector_free(dest);
     dest->front = malloc(src->size * sizeof(struct vector_item));
     if (dest->front == NULL) {
         espace_raise(SYS_ENOMEM);
@@ -129,36 +152,25 @@ int vector_copy(struct vector *dest, struct vector *src)
     return 0;
 }
 
-struct vector * vector_clone(struct vector *src)
+int vector_clone(struct vector **dest, struct vector *src)
 {
-    struct vector *new_vector;
-
-    new_vector = malloc(sizeof(*new_vector));
-    if (new_vector == NULL) {
+    *dest = malloc(sizeof(struct vector));
+    if (*dest == NULL) {
         espace_raise(SYS_ENOMEM);
-        return NULL;
+        return -1;
     }
-    vector_init(new_vector);
+    vector_init(*dest);
 
-    if (vector_copy(new_vector, src))
-        goto ERROR;
+    if (vector_copy(*dest, src)) {
+        free(*dest);
+        return -1;
+    }
 
-    return new_vector;
-
-ERROR:
-    if (new_vector != NULL)
-        free(new_vector);
-    return NULL;
+    return 0;
 }
 
-void vector_free(struct vector *vector, bool free_data)
+void vector_free(struct vector *vector)
 {
-    size_t i;
-
-    if (free_data) {
-        for (i = 0; i < vector->size; i++)
-            free((vector->front + i)->data);
-    }
     if (vector->front != NULL) {
         free(vector->front);
         vector->front = NULL;
