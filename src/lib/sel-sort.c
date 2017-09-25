@@ -6,7 +6,7 @@ int sel_sort(struct vector *v, enum sortdir direction,
     void *to_swap;
     void *first;
     void *cursor;
-    int must_chose;
+    int chose_flag;
     size_t to_swap_index;
     size_t i;
     size_t k;
@@ -14,12 +14,12 @@ int sel_sort(struct vector *v, enum sortdir direction,
     if (v->size < 2)
         return 0;
 
-    must_chose = direction == SORTDIR_INC ? 1 : -1;
+    chose_flag = direction == SORTDIR_INC ? 1 : -1;
     for (i = 0; i < v->size - 1; i++) {
         to_swap = vector_get(v, i) ;
         for (k = i + 1; k < v->size; k++) {
             cursor = vector_get(v, k);
-            if (cmp_fn(to_swap, cursor) == must_chose) {
+            if (cmp_fn(cursor, to_swap) == chose_flag) {
                 to_swap = cursor;
                 to_swap_index = k;
             }

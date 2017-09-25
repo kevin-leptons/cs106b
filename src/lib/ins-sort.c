@@ -9,18 +9,18 @@ int ins_sort(struct vector *v, enum sortdir direction,
     void *cursor;
     size_t i;
     size_t k;
-    int must_shift;
+    int shift_flag;
 
     if (v->size < 2)
         return 0;
 
-    must_shift = direction == SORTDIR_INC ? -1 : 1;
+    shift_flag = (direction == SORTDIR_INC) ? -1 : 1;
 
     for (i = 1; i < v->size; i++) {
         tmp = vector_get(v, i);
         for (k = i; k > 0; k--) {
             cursor = vector_get(v, k - 1);
-            if (cmp_fn(cursor, tmp) == must_shift)
+            if (cmp_fn(cursor, tmp) == shift_flag)
                 vector_set(v, k, cursor);
             else
                 break;

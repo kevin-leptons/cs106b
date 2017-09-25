@@ -5,8 +5,11 @@
 #include <cs106b/vector.h>
 #include <cs106b/sorting.h>
 
-#define ITEMS_NUM 8
-size_t ITEMS[ITEMS_NUM] = {10, 4, 5, 3, 2, 6, 1, 0};
+#define ITEMS_NUM 16
+size_t ITEMS[ITEMS_NUM] = {
+    7, 4, 5, 3, 2, 6, 1, 0, 
+    128, 17, 2, 16, 8, 10, 9, 17
+};
 
 int sizet_cmpfn(void *left, void *right)
 {
@@ -17,9 +20,9 @@ int sizet_cmpfn(void *left, void *right)
     rightv = *(size_t *) right;
 
     if (leftv < rightv)
-        return -1;
-    else if (leftv > rightv)
         return 1;
+    else if (leftv > rightv)
+        return -1;
     else
         return 0;
 }
@@ -41,6 +44,8 @@ void cli_help(void)
     printf("TYPES\n");
     printf("    ins:    insertion sort\n");
     printf("    sel:    selection sort\n");
+    printf("    mer:    merge sort\n");
+    printf("    qui:    quick sort\n");
 }
 
 int (*sort_fn)(struct vector *v, enum sortdir direction,
@@ -62,7 +67,12 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "sel") == 0) {
         sort_fn = sel_sort;
         printf("algorithm: selection\n");
-    } else if (strcmp(argv[1], "sel") == 0) {
+    } else if (strcmp(argv[1], "mer") == 0) {
+        sort_fn = mer_sort;
+        printf("algorithm: merge\n");
+    } else if (strcmp(argv[1], "qui") == 0) {
+        sort_fn = qui_sort;
+        printf("algorithm: quick\n");
     } else {
         cli_help();
         return EXIT_FAILURE;

@@ -1,11 +1,24 @@
 /*
 NAME
 
-    sorting
+    sorting - Commom sorting algorithms
 
 SYNOPSIS
 
+    int ins_sort(struct vector *v, enum sortdir direction,
+                 int (*cmp_fn)(void *left, void *right));
+    int sel_sort(struct vector *v, enum sortdir direction,
+                 int (*cmp_fn)(void *left, void *right));
+    int mer_sort(struct vector *v, enum sortdir direction,
+                 int (*cmp_fn)(void *left, void *right));
+    int qui_sort(struct vector *v, enum sortdir direction,
+                 int (*cmp_fn)(void *left, void *right));
+
 DESCRIPTION
+
+    All of functions have the same interfaces and use to sort vector. 
+    Comparision function MUST be provide to help sorting function know that
+    relationship of element in vector: greater, less or equal.
 
     cmp_fn MUST return:
     
@@ -15,7 +28,11 @@ DESCRIPTION
 
 RETURN
 
+    On success, return 0. On failure return -1.
+
 ERRORS
+
+    SYS_ENOMEM
 
 AUTHORS
 
@@ -35,6 +52,10 @@ enum sortdir {
 int ins_sort(struct vector *v, enum sortdir direction,
              int (*cmp_fn)(void *left, void *right));
 int sel_sort(struct vector *v, enum sortdir direction,
+             int (*cmp_fn)(void *left, void *right));
+int mer_sort(struct vector *v, enum sortdir direction,
+             int (*cmp_fn)(void *left, void *right));
+int qui_sort(struct vector *v, enum sortdir direction,
              int (*cmp_fn)(void *left, void *right));
 
 #endif
