@@ -40,17 +40,20 @@ DESCRIPTION
     current size, few items will be disapears.
 
     vector_get() and vector_set() retrieve/store items in vector by index.
-    If index is out of range, calling will failes and espace is set to 
+    If index is out of range, calling will fails and espace is set to 
     CS106B_EINDEX.
 
     vector_put() store item into index and move right items at i to i + 1.
-    If index is out of range, calling will failes and espace is set to
+    If index is out of range, calling will fails and espace is set to
     CS106B_EINDEX. If vector's size is zero, you can't put item into
     0 index, that cause CS106B_EINDEX.
 
     vector_add() put item into back of vector.
 
     vector_del() remove item at index and move right items at i to i - 1.
+
+    vector_end() retrieve end item in vector. If vector's size 0, calling
+    will fails and espace is set to CS106B_EINDEX.
 
     vector_copy() copy items from dest to source. If source vector is not
     empty and max size is less than source's size, calling frees dest vector
