@@ -82,8 +82,8 @@ AUTHORS
     Kevin Leptons <kevin.leptons@gmail.com>
 */
     
-#ifndef __CS106B_VECTOR_H__
-#define __CS106B_VECTOR_H__
+#ifndef _CS106B_VECTOR_H_
+#define _CS106B_VECTOR_H_
 
 #include <stdlib.h>
 #include <stdbool.h>
