@@ -10,20 +10,13 @@
 static int _vector_extend(struct vector *vector);
 static int _vector_narrow(struct vector *vector);
 
-int vector_init(struct vector *vector)
+void vector_init(struct vector *vector)
 {
-    if (vector == NULL) {
-        espace_raise(SYS_EINVAL);
-        return -1;
-    }
-
     vector->size = 0;
     vector->max_size = 0;
     vector->front = NULL;
     vector->base_size = VECTOR_BSIZE;
     vector->ext_size = VECTOR_ESIZE;
-
-    return 0;
 }
 
 int vector_resize(struct vector *vector, size_t max_size)
@@ -70,7 +63,7 @@ int vector_set(struct vector *vector, size_t index, void *data)
     return 0;
 }
 
-int vector_insert(struct vector *vector, size_t index, void *data)
+int vector_put(struct vector *vector, size_t index, void *data)
 {
     size_t i;
 
@@ -104,7 +97,7 @@ int vector_add(struct vector *vector, void *data)
     return 0;
 }
 
-int vector_remove(struct vector *vector, size_t index)
+int vector_del(struct vector *vector, size_t index)
 {
     size_t i;
 

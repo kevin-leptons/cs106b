@@ -34,17 +34,17 @@ int main(int argc, char *argv[])
     printf("vector_resize(%u), size=%zu\n", 2 * NUM_ITEM, vector.max_size);
 
     // remove item from vector
-    if (vector_remove(&vector, 4) != 0)
+    if (vector_del(&vector, 4) != 0)
         goto error;
-    printf("vector_remove(4)\n");
+    printf("vector_del(4)\n");
 
     // insert item to vector
     if (cs106b_malloc((void *) &data, sizeof(*data)))
         goto error;
     *data  = 123;
-    if (vector_insert(&vector, 0, data) != 0)
+    if (vector_put(&vector, 0, data) != 0)
         goto error;
-    printf("vector_insert(0, %zu)\n", *data);
+    printf("vector_put(0, %zu)\n", *data);
 
     // get items from vector
     for (i = 0; i < vector.size; i++) {

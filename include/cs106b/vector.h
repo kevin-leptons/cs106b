@@ -1,12 +1,17 @@
 /*
 SYNOPSIS
 
-    int vector_init(struct vector *vector, size_t bsize, size_t esize);
-    int vector_insert(struct vector *vector, size_t index, void *data);
+    int vector_init(struct vector *vector);
+    int vector_resize(struct vector *vector, size_t size);
+    int vector_get(struct vector *vector, size_t index, void **value);
+    int vector_set(struct vector *vector, size_t index, void *data);
+    int vector_put(struct vector *vector, size_t index, void *data);
     int vector_add(struct vector *vector, void *data);
-    int vector_remove(struct vector *vector, size_t index);
-    void *vector_at(struct vector *vector, size_t index);
-    void vector_free(struct vector *vector, bool free_data);
+    int vector_del(struct vector *vector, size_t index);
+    int vector_end(struct vector *vector, void **value);
+    int vector_copy(struct vector *dest, struct vector *src);
+    int vector_clone(struct vector **dest, struct vector *src);
+    void vector_free(struct vector *vector);
 
 COMPLEXITY
 
@@ -16,30 +21,40 @@ COMPLEXITY
     vector_resize()     O(n)        O(n)
     vector_get()        O(1)        O(1)     
     vector_set()        O(1)        O(1)     
-    vector_insert()     O(1)        O(n)     
+    vector_put()        O(1)        O(n)     
     vector_add()        O(1)        O(n)     
-    vector_remove()     O(1)        O(n)     
+    vector_del()        O(1)        O(n)     
+    vector_end()        O(1)        O(1)
     vector_copy()       O(n)        O(n)
     vector_clone()      O(n)        O(n)
     vector_free()       O(1)        O(1)     
     ----------------------------------------
 
-    n is number of item in vector.
+    n is number of items in vector.
 
 DESCRIPTION
 
-    vector_init() construct new metadata of vector.
+    vector_init() construct new of vector
 
-    vector_insert() put item into index and move any item from index + i
-    to n to right.
+    vector_resize() change max size of vector. If new max size is less than
+    current size, few items will be disapears.
 
-    vector_add() puth item into back of vector.
+    vector_get() and vector_set() retrieve/store items in vector by index.
+    If index is out of range, calling will failes and espace is set to 
+    CS106B_EINDEX.
 
-    vector_remove() remove item at index and move any item from index + i
-    to n to left.
+    vector_put() store item into index and move right items at i to i + 1.
+    If index is out of range, calling will failes and espace is set to
+    CS106B_EINDEX. If vector's size is zero, you can't put item into
+    0 index, that cause CS106B_EINDEX.
 
-    vector_copy() free destination vector then copy items of source vector
-    to destination vector.
+    vector_add() put item into back of vector.
+
+    vector_del() remove item at index and move right items at i to i - 1.
+
+    vector_copy() copy items from dest to source. If source vector is not
+    empty and max size is less than source's size, calling frees dest vector
+    then alloc new memory block.
 
     vector_clone() create new vector, then copy items of source vector to
     new vector.
@@ -48,25 +63,19 @@ DESCRIPTION
 
 ARGUMENTS
 
-    If free_data is true, call free() with pointer (struct vector_item).data
-    of each items.
+    Index argument is unsigned integer, start from zero to max of size_t.
+
+    Item argument is presents by void pointer.
 
 RETURNS
 
-    vector_init(), vector_insert(), vector_add(), vector_remove(), 
-    vector_copy(), on success, return 0. On failure, return -1.
-
-    vector_clone on success return pointer to new vector, on failure return
-    NULL.
-
-    vector_at() on success return pointer to data of item. On failure, return
-    NULL and espace will be set to CS106B_ENOITEM.
+    On success, return 0. On failure, return -1 and espace is set to
+    corresponding error.
 
 ERRORS
 
-    CS106B_EINDEX
-    SYS_ENOMEM
-    SYS_INVAL
+    CS106B_EINDEX           Out of index value
+    SYS_ENOMEM              System memory is full
 
 AUTHORS
 
@@ -93,13 +102,13 @@ struct vector
     size_t ext_size;
 };
 
-int vector_init(struct vector *vector);
+void vector_init(struct vector *vector);
 int vector_resize(struct vector *vector, size_t size);
 int vector_get(struct vector *vector, size_t index, void **value);
 int vector_set(struct vector *vector, size_t index, void *data);
-int vector_insert(struct vector *vector, size_t index, void *data);
+int vector_put(struct vector *vector, size_t index, void *data);
 int vector_add(struct vector *vector, void *data);
-int vector_remove(struct vector *vector, size_t index);
+int vector_del(struct vector *vector, size_t index);
 int vector_end(struct vector *vector, void **value);
 int vector_copy(struct vector *dest, struct vector *src);
 int vector_clone(struct vector **dest, struct vector *src);
