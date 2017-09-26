@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
     rtime = DEF_RTIME;
     ret = EXIT_FAILURE;
 
+    // handle for options
     for (;;) {
         opt = getopt(argc, argv, "hf:t:");
         if (opt < 0)
@@ -91,6 +92,7 @@ int main(int argc, char *argv[])
         }
     }
     
+    // use default pattern or get it from file 
     if (pfile != NULL) {
         if (open_pfile(pfile, &g1) != 0)
             goto finish;
@@ -111,6 +113,7 @@ int main(int argc, char *argv[])
     if (grid_resize(&g2, g1.row_size, g1.col_size))
         goto clear_g1;
 
+    // start loop to show game
     rtime = rtime * 1000;
     gtmp1 = &g1;
     gtmp2 = &g2;
