@@ -1,69 +1,88 @@
 /*
 SYNOPSIS
+========
 
-    int grid_init(struct grid *grid, size_t row_size, size_t col_size);
-    int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
-    union grid_item *grid_at(struct grid *grid, size_t row, size_t col);
+    void grid_init(struct grid *grid, size_t item_size);
     void grid_free(struct grid *grid);
+    int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
+    int grid_get(struct grid *grid, size_t row, size_t col, void **value);
+    int grid_set(struct grid *grid, size_t row, size_t col, void *value);
+    int grid_copy(struct grid *dest, struct grid *src);
+    int grid_clone(struct grid **dest, struct grid *src);
 
 COMPLEXITY
+==========
 
     fn                  best        worst
     --------------------------------------------
     grid_init()         O(1)        O(1)
-    grid_resize()       O(n)        O(n)
-    grid_at()           O(1)        O(1)
     grid_free()         O(1)        O(1)
+    grid_resize()       O(n)        O(n)
+    grid_get()          O(1)        O(1)
+    grid_set()          O(1)        O(1)
+    grid_copy()         O(n)        O(n)
+    grid_clone()        O(n)        O(n)
     --------------------------------------------
 
     n is number of items in grid, n = row_size * col_size.
 
 DESCRIPTION
+===========
 
-    grid_init() construct an grid.
+    grid_init() and grid_free() construct/destroy an grid.
 
-    grid_resize() resize of grid, it change number of rows and cols.
+    grid_resize() changes number of rows and cols of grid.
 
-    grid_at() retrieve item at row and col.
+    grid_get() and grid_set() retrieve/store item into cell of grid.
 
-    grid_free() release memory which use by grid.
+    grid_copy() copy items of source to dest grid.
+
+    grid_clone() create new grid called dest grid, then copy items of source
+    grid to dest grid.
 
 ARGUMENTS
+=========
 
-    row_size is maximum number of rows in grid. col_size is maximum number of
-    columns in grid.
+    <item_size> is size of items in grid by bytes.
+
+    <row_size>, <col_size> is maximum number of rows and columns in grid.
 
 RETURNS
+=======
 
-    grid_init(), grid_resize(), on success return 0, on failure return -1.
+    On success, return 0. On failure, return -1.
 
-    grid_at() on success return pointer to grid item, on failure return NULL.
+ERRORS
+======
+
+    CS106B_EINDEX           Row or column index is out of range
+    SYS_ENOMEM              System memory is full
 
 AUTHORS
+=======
 
     Kevin Leptons <kevin.leptons@gmail.com>
 */
 
-#include <stdlib.h>
-#include <inttypes.h>
+#ifndef _cs106b_grid_h
+#define _cs106b_grid_h
 
-union grid_item
-{
-    uint8_t uint8;
-    uint16_t uint16;
-    uint32_t uint32;
-    uint64_t uint64;
-    void *data;
-};
+#include <stdlib.h>
 
 struct grid
 {
-    union grid_item *items;
+    void *items;
     size_t row_size;
     size_t col_size;
+    size_t item_size;
 };
 
-int grid_init(struct grid *grid, size_t row_size, size_t col_size);
-int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
-union grid_item *grid_at(struct grid *grid, size_t row, size_t col);
+void grid_init(struct grid *grid, size_t item_size);
 void grid_free(struct grid *grid);
+int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
+int grid_get(struct grid *grid, size_t row, size_t col, void **value);
+int grid_set(struct grid *grid, size_t row, size_t col, void *value);
+int grid_copy(struct grid *dest, struct grid *src);
+int grid_clone(struct grid **dest, struct grid *src);
+
+#endif
