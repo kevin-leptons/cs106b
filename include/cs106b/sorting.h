@@ -1,40 +1,65 @@
 /*
 NAME
+====
 
-    sorting - Commom sorting algorithms
+    sorting - sorting family 
 
 SYNOPSIS
+========
 
-    int ins_sort(struct vector *v, enum sortdir direction,
-                 int (*cmp_fn)(void *left, void *right));
-    int sel_sort(struct vector *v, enum sortdir direction,
-                 int (*cmp_fn)(void *left, void *right));
-    int mer_sort(struct vector *v, enum sortdir direction,
-                 int (*cmp_fn)(void *left, void *right));
-    int qui_sort(struct vector *v, enum sortdir direction,
-                 int (*cmp_fn)(void *left, void *right));
+    typedef int (*sort_cmp)(void *left, void *right);
 
+    int sort_ins(struct vector *v, enum sortdir dir, sort_cmp cmp);
+    int sort_sel(struct vector *v, enum sortdir dir, sort_cmp cmp);
+    int sort_mer(struct vector *v, enum sortdir dir, sort_cmp cmp);
+    int sort_qui(struct vector *v, enum sortdir dir, sort_cmp cmp);
+
+COMPLEXITY
+==========
+
+    fn              worst O()       best 0()        worst S()
+    ======================================================
+    sort_ins        n^2             n               n 
+    sort_sel        n^2             n^2             n
+    sort_mer        n.log2(n)       n.log2(n)       n.log2(n)
+    sort_qui        n^2             n.log(n)        n
+     
 DESCRIPTION
+===========
 
     All of functions have the same interfaces and use to sort vector. 
-    Comparision function MUST be provide to help sorting function know that
-    relationship of element in vector: greater, less or equal.
+    However, thier OPERATION_COMPLEXITY and SPACE_COMPLEXITY is different.
 
-    cmp_fn MUST return:
-    
+ARGUMENTS
+=========
+
+    <v> is vector, it can contains any data type. 
+
+    <dir> is direction to sort. Two valid direction are:
+
+        SORTDIR_INC: Sorting follows increasing order
+        SORTDIR_DEC: Sorting follows decreasing order
+   
+    <cmp> is function pointer which point to comparision function which
+    use to compare two value called left and right. It MUST returns:
+
         0 on left is equal right
         1 on left is less than right
         -1 on left is greater than right
 
 RETURN
+======
 
     On success, return 0. On failure return -1.
 
 ERRORS
+======
 
-    SYS_ENOMEM
+    SYS_ENOMEM      Some algorithms requires dynamic memory to work. 
+                    This error warns that system is out of memory.
 
 AUTHORS
+=======
 
     Kevin Leptons <kevin.leptons@gmail.com>
 */
@@ -49,13 +74,11 @@ enum sortdir {
     SORTDIR_INC
 };
 
-int ins_sort(struct vector *v, enum sortdir direction,
-             int (*cmp_fn)(void *left, void *right));
-int sel_sort(struct vector *v, enum sortdir direction,
-             int (*cmp_fn)(void *left, void *right));
-int mer_sort(struct vector *v, enum sortdir direction,
-             int (*cmp_fn)(void *left, void *right));
-int qui_sort(struct vector *v, enum sortdir direction,
-             int (*cmp_fn)(void *left, void *right));
+typedef int (*sort_cmp)(void *left, void *right);
+
+int sort_ins(struct vector *v, enum sortdir dir, sort_cmp cmp);
+int sort_sel(struct vector *v, enum sortdir dir, sort_cmp cmp);
+int sort_mer(struct vector *v, enum sortdir dir, sort_cmp cmp);
+int sort_qui(struct vector *v, enum sortdir dir, sort_cmp cmp);
 
 #endif

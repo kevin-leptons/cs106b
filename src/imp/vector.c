@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <espace/error.h>
 #include <espace/sys.h>
-
 #include <cs106b/error.h>
 #include <cs106b/vector.h>
 #include <cs106b/mem.h>

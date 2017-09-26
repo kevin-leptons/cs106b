@@ -1,7 +1,8 @@
 /*
 SYNOPSIS
+========
 
-    int vector_init(struct vector *vector);
+    void vector_init(struct vector *vector);
     int vector_resize(struct vector *vector, size_t size);
     int vector_get(struct vector *vector, size_t index, void **value);
     int vector_set(struct vector *vector, size_t index, void *data);
@@ -14,6 +15,7 @@ SYNOPSIS
     void vector_free(struct vector *vector);
 
 COMPLEXITY
+==========
 
     fn                  best        worst
     ----------------------------------------
@@ -33,6 +35,7 @@ COMPLEXITY
     n is number of items in vector.
 
 DESCRIPTION
+===========
 
     vector_init() construct new of vector
 
@@ -65,22 +68,26 @@ DESCRIPTION
     vector_free() free memory usase by vector.
 
 ARGUMENTS
+=========
 
     Index argument is unsigned integer, start from zero to max of size_t.
 
     Item argument is presents by void pointer.
 
 RETURNS
+=======
 
     On success, return 0. On failure, return -1 and espace is set to
     corresponding error.
 
 ERRORS
+======
 
     CS106B_EINDEX           Out of index value
     SYS_ENOMEM              System memory is full
 
 AUTHORS
+=======
 
     Kevin Leptons <kevin.leptons@gmail.com>
 */
