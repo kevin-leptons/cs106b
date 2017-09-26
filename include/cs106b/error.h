@@ -7,8 +7,8 @@
 
 ESPACE_ERRDEC(CS106B_EINDEX);
 ESPACE_ERRDEC(CS106B_EKEY);
+ESPACE_ERRDEC(CS106B_EFORMAT);
 
 void exit_err(const char *caller);
-void exit_errx(const char *caller);
 
 #endif

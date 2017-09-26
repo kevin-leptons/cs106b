@@ -15,6 +15,7 @@ void grid_free(struct grid *grid)
 {
     grid->row_size = 0;
     grid->col_size = 0;
+    grid->item_size = 0;
     if (grid->items != NULL)
         free(grid->items);
 }
