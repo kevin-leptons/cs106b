@@ -1,6 +1,6 @@
 #include <cs106b/sorting.h>
 
-int sort_sel(struct vector *v, enum sortdir dir, sort_cmp cmp)
+int sort_sel(struct vector *v, enum sort_dir dir, sort_cmp cmp)
 {
     void *to_swap;
     void *first;
@@ -13,7 +13,7 @@ int sort_sel(struct vector *v, enum sortdir dir, sort_cmp cmp)
     if (v->size < 2)
         return 0;
 
-    chose_flag = dir == SORTDIR_INC ? 1 : -1;
+    chose_flag = dir == SORT_INC ? 1 : -1;
     for (i = 0; i < v->size - 1; i++) {
         if (vector_get(v, i, &to_swap))
             return -1;

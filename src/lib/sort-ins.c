@@ -2,7 +2,7 @@
 #include <cs106b/error.h>
 
 
-int sort_ins(struct vector *v, enum sortdir dir, sort_cmp cmp)
+int sort_ins(struct vector *v, enum sort_dir dir, sort_cmp cmp)
 {
     void *tmp;
     void *cursor;
@@ -13,7 +13,7 @@ int sort_ins(struct vector *v, enum sortdir dir, sort_cmp cmp)
     if (v->size < 2)
         return 0;
 
-    shift_flag = (dir == SORTDIR_INC) ? -1 : 1;
+    shift_flag = (dir == SORT_INC) ? -1 : 1;
 
     for (i = 1; i < v->size; i++) {
         if (vector_get(v, i, &tmp))

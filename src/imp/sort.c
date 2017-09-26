@@ -11,7 +11,7 @@ size_t ITEMS[ITEMS_NUM] = {
     128, 17, 2, 16, 8, 10, 9, 17
 };
 
-int sizet_cmpfn(void *left, void *right)
+int sizet_cmp(void *left, void *right)
 {
     size_t leftv;
     size_t rightv;
@@ -51,8 +51,7 @@ void cli_help(void)
     printf("    qui:        quick\n");
 }
 
-int (*sort_fn)(struct vector *v, enum sortdir direction,
-               int (*cmp_fn)(void *left, void *right));
+int (*sort_fn)(struct vector *v, enum sort_dir direction, sort_cmp cmp);
 
 int main(int argc, char *argv[])
 {
@@ -91,14 +90,14 @@ int main(int argc, char *argv[])
     dump_vec(&v);
     printf("algorithm: %s\n", alg_name);
 
-    if (sort_fn(&v, SORTDIR_INC, sizet_cmpfn))
+    if (sort_fn(&v, SORT_INC, sizet_cmp))
         goto error;
-    printf("output SORTDIR_INC: ");
+    printf("output SORT_INC: ");
     dump_vec(&v);
 
-    if (sort_fn(&v, SORTDIR_DEC, sizet_cmpfn))
+    if (sort_fn(&v, SORT_DEC, sizet_cmp))
         goto error;
-    printf("output SORTDIR_DEC: ");
+    printf("output SORT_DEC: ");
     dump_vec(&v);
 
     vector_free(&v);

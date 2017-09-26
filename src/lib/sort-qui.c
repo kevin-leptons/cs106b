@@ -1,6 +1,6 @@
 #include <cs106b/sorting.h>
 
-static size_t _partition(struct vector *v, enum sortdir dir,
+static size_t _partition(struct vector *v, enum sort_dir dir,
                          size_t start, size_t end, sort_cmp cmp)
 {
     size_t left_index;
@@ -14,7 +14,7 @@ static size_t _partition(struct vector *v, enum sortdir dir,
         return -1;
     left_index = start + 1;
     right_index = end;
-    match = (dir == SORTDIR_INC) ? 1 : -1;
+    match = (dir == SORT_INC) ? 1 : -1;
 
     for (;;) {
         for (; left_index < right_index; left_index++) {
@@ -48,7 +48,7 @@ static size_t _partition(struct vector *v, enum sortdir dir,
     return left_index;
 }
 
-int _qui_sort(struct vector *v, enum sortdir dir,
+int _qui_sort(struct vector *v, enum sort_dir dir,
               size_t start, size_t end, sort_cmp cmp)
 {
     size_t boundary;
@@ -67,7 +67,7 @@ int _qui_sort(struct vector *v, enum sortdir dir,
     return 0;
 }
 
-int sort_qui(struct vector *v, enum sortdir dir, sort_cmp cmp)
+int sort_qui(struct vector *v, enum sort_dir dir, sort_cmp cmp)
 {
     return _qui_sort(v, dir, 0, v->size - 1, cmp);
 }

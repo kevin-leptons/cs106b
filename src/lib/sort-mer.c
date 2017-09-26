@@ -1,7 +1,7 @@
 #include <cs106b/sorting.h>
 
 static int _merge(struct vector *dest, struct vector *v1, struct vector *v2,
-                enum sortdir dir, sort_cmp cmp)
+                  enum sort_dir dir, sort_cmp cmp)
 {
     size_t i;
     size_t k;
@@ -10,7 +10,7 @@ static int _merge(struct vector *dest, struct vector *v1, struct vector *v2,
     void *right;
     int lchose_flag;
 
-    lchose_flag = dir == SORTDIR_INC ? 1 : -1;
+    lchose_flag = dir == SORT_INC ? 1 : -1;
     for (i = 0, k = 0, l = 0; i < v1->size && k < v2->size; l++) {
         if (vector_get(v1, i, &left))
             return -1;
@@ -43,7 +43,7 @@ static int _merge(struct vector *dest, struct vector *v1, struct vector *v2,
     return 0;
 }
 
-int sort_mer(struct vector *v, enum sortdir dir, sort_cmp cmp)
+int sort_mer(struct vector *v, enum sort_dir dir, sort_cmp cmp)
 {
     size_t mid;
     struct vector v1;

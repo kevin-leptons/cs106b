@@ -9,10 +9,10 @@ SYNOPSIS
 
     typedef int (*sort_cmp)(void *left, void *right);
 
-    int sort_ins(struct vector *v, enum sortdir dir, sort_cmp cmp);
-    int sort_sel(struct vector *v, enum sortdir dir, sort_cmp cmp);
-    int sort_mer(struct vector *v, enum sortdir dir, sort_cmp cmp);
-    int sort_qui(struct vector *v, enum sortdir dir, sort_cmp cmp);
+    int sort_ins(struct vector *v, enum sort_dir dir, sort_cmp cmp);
+    int sort_sel(struct vector *v, enum sort_dir dir, sort_cmp cmp);
+    int sort_mer(struct vector *v, enum sort_dir dir, sort_cmp cmp);
+    int sort_qui(struct vector *v, enum sort_dir dir, sort_cmp cmp);
 
 COMPLEXITY
 ==========
@@ -37,8 +37,8 @@ ARGUMENTS
 
     <dir> is direction to sort. Two valid direction are:
 
-        SORTDIR_INC: Sorting follows increasing order
-        SORTDIR_DEC: Sorting follows decreasing order
+        SORT_INC: Sorting follows increasing order
+        SORT_DEC: Sorting follows decreasing order
    
     <cmp> is function pointer which point to comparision function which
     use to compare two value called left and right. It MUST returns:
@@ -55,8 +55,7 @@ RETURN
 ERRORS
 ======
 
-    SYS_ENOMEM      Some algorithms requires dynamic memory to work. 
-                    This error warns that system is out of memory.
+    SYS_ENOMEM      System memory is full 
 
 AUTHORS
 =======
@@ -69,16 +68,16 @@ AUTHORS
 
 #include <cs106b/vector.h>
 
-enum sortdir {
-    SORTDIR_DEC,
-    SORTDIR_INC
+enum sort_dir {
+    SORT_DEC,
+    SORT_INC
 };
 
 typedef int (*sort_cmp)(void *left, void *right);
 
-int sort_ins(struct vector *v, enum sortdir dir, sort_cmp cmp);
-int sort_sel(struct vector *v, enum sortdir dir, sort_cmp cmp);
-int sort_mer(struct vector *v, enum sortdir dir, sort_cmp cmp);
-int sort_qui(struct vector *v, enum sortdir dir, sort_cmp cmp);
+int sort_ins(struct vector *v, enum sort_dir dir, sort_cmp cmp);
+int sort_sel(struct vector *v, enum sort_dir dir, sort_cmp cmp);
+int sort_mer(struct vector *v, enum sort_dir dir, sort_cmp cmp);
+int sort_qui(struct vector *v, enum sort_dir dir, sort_cmp cmp);
 
 #endif
