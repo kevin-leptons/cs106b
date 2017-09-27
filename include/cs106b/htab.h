@@ -4,11 +4,13 @@ SYNOPSIS
 
     void htab_init(struct htab *t);
     void htab_free(struct htab *t);
+    int htab_resize(struct htab *t, size_t max_size);
     int htab_get(struct htab *t, const char *key, void **value);
     int htab_set(struct htab *t, const char *key, void *value);
     int htab_del(struct htab *t, const char *key);
     int htab_clear(struct htab *t);
-    int htab_resize(struct htab *t, size_t max_size);
+    int htab_copy(struct htab *dest, struct htab  *src);
+    int htab_clone(struct htab **dest, struct htab  *src);
 
 COMPLEXITY
 ==========
@@ -31,33 +33,33 @@ COMPLEXITY
 DESCRIPTION
 ===========
 
-    htab_init() construct hash table.
+    htab_init() and htab_free() construct/destruct hash table.
 
-    htab_set() set an pair key-value in table.
-
-    htab_get() retrieve value correspond with key in table.
-
-    htab_del() remove an pair key-value in table.
-
-    htab_clear() clear all of keys, keep memory usage.
+    htab_free() free memory usage by table.
 
     htab_resize() extend or narrow max size of table.
 
-    htab_free() free memory usage by table.
+    htab_get() and htab_set() retrieve/store value in hash table.
+
+    htab_del() remove an key-value pair in table.
+
+    htab_clear() clear all of keys, keep memory usage.
+
+    htab_copy() copy key-value pairs from source to dest table.
+
+    htab_clone() create new hash table and copy key-value pairs from source
+    to dest table.
 
 RETURNS
 =======
 
-    htable_init(), htable_set(), htable_del(), htable_resize() on success
-    return 0, on failure return -1.
-
-    htable_get() on success return pointer to value, on failure return NULL.
+    On success, return 0. On failure, return -1.
 
 ERRORS
 ======
 
-    CS106B_EKEY
-    SYS_ENOMEM
+    CS106B_EKEY             No key in hash table
+    SYS_ENOMEM              System memory is full
 */
 
 #ifndef _CS106B_HTAB_H_

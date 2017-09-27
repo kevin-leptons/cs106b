@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
     printf("htab_del('b')");
     if (htab_get(&t1, "b", (void *) &value)) {
         espace_clear();
+        espace_clear();
         printf(", key 'b' was removed\n");
     } else {
         goto free_t1;
