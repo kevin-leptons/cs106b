@@ -27,6 +27,7 @@ COMPLEXITY
     n is number of items in stack.
 
 DESCRIPTIION
+============
 
     stack_init() and stack_free() construct/destruct an stack.
 
@@ -41,22 +42,19 @@ DESCRIPTIION
 
     stack_clone() create new stack called dest then copy source to dest stack.
 
-ARGUMENTS
-
-    If free_data is true, call free() with (struct stack_item).data for each
-    items.
-
 RETURNS
+=======
 
-    stack_init(), stack_push(), stack_copy(), on success return 0, on
-    failure return -1.
+    On success, return 0. On failure, return -1;
 
-    stack_clone() on success return pointer to new stack, on error return NULL.
+ERRORS
+======
 
-    stack_pop(), stack_top() on success return pointer to item, on failure
-    return NULL.
+    CS106B_EINDEX           Push or top while stack is empty
+    SYS_ENOMEM              System memory is full
 
 AUTHORS
+=======
 
     Kevin Leptons <kevin.leptons@gmail.com>
 */
