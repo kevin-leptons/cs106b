@@ -3,6 +3,7 @@
 
 #include <cs106b/error.h>
 #include <cs106b/grid.h>
+#include <cs106b/mem.h>
 
 #define ROW_SIZE 4
 #define COL_SIZE 4
@@ -21,7 +22,10 @@ void dump_grid(struct grid *grid)
         for (col = 0; col < grid->col_size; col++) {
             if (grid_get(grid, row, col, (void *) &item))
                 exit_err("grid_get");
-            printf("%02zu ", *item);
+            if (item != NULL)
+                printf("%02zu ", *item);
+            else
+                printf("__ ");
         }
         printf("\n");
     }
@@ -36,7 +40,7 @@ int main(int argc, char *argv[])
     int ret = EXIT_FAILURE;
 
     printf("grid_init()\n");
-    grid_init(&grid, sizeof(*item));
+    grid_init(&grid);
     if (grid_resize(&grid, ROW_SIZE, COL_SIZE))
         goto error;
     printf("grid_resize(%u, %u)\n", ROW_SIZE, COL_SIZE);
@@ -44,9 +48,11 @@ int main(int argc, char *argv[])
     printf("grid_set()\n");
     for (row = 0; row < grid.row_size; row++) {
         for (col = 0; col < grid.col_size; col++) {
-            if (grid_get(&grid, row, col, (void *) &item))
+            if (cs106b_malloc((void *) &item, sizeof(*item)))
                 goto error;
-            *item = row * grid.col_size + col;
+            *item = row * grid.col_size + col + 1;
+            if (grid_set(&grid, row, col, item))
+                goto error;
         }
     }
 

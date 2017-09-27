@@ -2,7 +2,7 @@
 SYNOPSIS
 ========
 
-    void grid_init(struct grid *grid, size_t item_size);
+    void grid_init(struct grid *grid);
     void grid_free(struct grid *grid);
     int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
     int grid_get(struct grid *grid, size_t row, size_t col, void **value);
@@ -69,15 +69,19 @@ AUTHORS
 
 #include <stdlib.h>
 
-struct grid
+struct grid_item
 {
-    void *items;
-    size_t row_size;
-    size_t col_size;
-    size_t item_size;
+    void *value;
 };
 
-void grid_init(struct grid *grid, size_t item_size);
+struct grid
+{
+    struct grid_item *items;
+    size_t row_size;
+    size_t col_size;
+};
+
+void grid_init(struct grid *grid);
 void grid_free(struct grid *grid);
 int grid_resize(struct grid *grid, size_t row_size, size_t col_size);
 int grid_get(struct grid *grid, size_t row, size_t col, void **value);

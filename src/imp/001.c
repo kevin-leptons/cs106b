@@ -48,6 +48,8 @@ const char PATTERN_TOAD[6][6] = {
     {0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0} 
 };
+const char ZERO = 0;
+const char NZERO = 1;
 
 int dump_grid(struct grid *grid);
 int live(struct grid *src, struct grid *dest);
@@ -67,7 +69,6 @@ int main(int argc, char *argv[])
     int opt;
     size_t row;
     size_t col;
-    uint8_t *item;
     int ret;
 
     pfile = NULL;
@@ -97,19 +98,18 @@ int main(int argc, char *argv[])
         if (open_pfile(pfile, &g1) != 0)
             goto finish;
     } else {
-        grid_init(&g1, sizeof(*item));
+        grid_init(&g1);
         if (grid_resize(&g1, 6, 6))
             goto finish;
         for (row = 0; row < g1.row_size; row++) {
             for (col = 0; col < g1.col_size; col++) {
-                if (grid_get(&g1, row, col, (void *) &item))
+                if (grid_set(&g1, row, col, (void *) &PATTERN_TOAD[row][col]))
                     goto finish;
-                *item = PATTERN_TOAD[row][col] != 0;
             }
         }
     }
 
-    grid_init(&g2, sizeof(*item));
+    grid_init(&g2);
     if (grid_resize(&g2, g1.row_size, g1.col_size))
         goto clear_g1;
 
@@ -182,14 +182,19 @@ int live(struct grid *src, struct grid *dest)
                return -1;
 
            if (*src_item != 0) {
-               if (n == 2 || n == 3)
-                   *dest_item = 1;
-               else
-                   *dest_item = 0;
+               if (n == 2 || n == 3) {
+                   if (grid_set(dest, row, col, (void *) &NZERO))
+                       return -1;
+               } else {
+                   if (grid_set(dest, row, col, (void *) &ZERO))
+                       return -1;
+               }
            } else if (n == 3) {
-               *dest_item = 1;
+               if (grid_set(dest, row, col, (void *) &NZERO))
+                   return -1;
            } else {
-               *dest_item = 0;
+               if (grid_set(dest, row, col, (void *) &ZERO))
+                   return -1;
            }
         }
     }
@@ -337,7 +342,7 @@ int open_pfile(const char *file, struct grid *grid)
         goto clear_data;
     }
 
-    grid_init(grid, sizeof(*item));
+    grid_init(grid);
     if (grid_resize(grid, row_size, col_size))
         goto clear_data;
 
@@ -353,10 +358,13 @@ int open_pfile(const char *file, struct grid *grid)
             grid_free(grid);
             goto clear_data;
         }
-        if (*p == '1')
-            *item = 1;
-        else
-            *item = 0;
+        if (*p == '1') {
+            if (grid_set(grid, row, col, (void *) &NZERO))
+                goto clear_data;
+        } else {
+            if (grid_set(grid, row, col, (void *) &ZERO))
+                goto clear_data;
+        }
         col += 1;
     }
 
