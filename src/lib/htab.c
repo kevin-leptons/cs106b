@@ -248,7 +248,6 @@ static int _htab_extend(struct htab *table)
     if (load_factor < LOAD_FACTOR_TOP)
         return 0;
 
-    printf("xxxxxxxxxxxxxxxxxxxxxx\n");
     mod_k = (table->max_size - HTAB_MOD_B) / HTAB_MOD_N;
     mod_k += 1;
 

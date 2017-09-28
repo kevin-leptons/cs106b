@@ -1,7 +1,7 @@
-dest/
-dist/
-tmp/
-test/
+/dest/
+/dist/
+/tmp/
+/test/
 
 *.swp
 *.swpc
