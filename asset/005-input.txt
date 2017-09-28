@@ -1,18 +1,8 @@
-0   kevin leptons
+10  kevin leptons
 3   ariana grade
 5   katty perry
 6   lady gaga
 2   michael jackson
 4   mika
 8   eminem
-2   ceelo green
-9   9
-10  10
-11  11
-12  12
-13  13
-14  14
-15  15
-16  16
-17  17
-18  18
+0   ceelo green

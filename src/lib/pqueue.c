@@ -65,9 +65,8 @@ int pqueue_push(struct pqueue *q, void *data, size_t priority)
                 _pqueue_swap(q, parent_index, child_index);
             else
                 break;
-        } else {
-            return -1;
         }
+        child_index = parent_index;
     }
 
     return 0;
@@ -123,9 +122,7 @@ int pqueue_pop(struct pqueue *q, void **data)
                 child_index = lchild_index;
             else
                 child_index = rchild_index;
-        } else {
-            return -1;
-        }
+        } 
 
         // swap
         child = q->items + child_index;
@@ -139,10 +136,7 @@ int pqueue_pop(struct pqueue *q, void **data)
                 _pqueue_swap(q, child_index, parent_index);
             else
                 break;
-        } else {
-            return -1;
         }
-
         parent_index = child_index;
     }
 
@@ -203,7 +197,6 @@ static int _pqueue_resize(struct pqueue *q, size_t max_size)
 {
     struct pqueue_item *new_items;
     size_t new_msize;
-    size_t copy_size;
     
     new_msize = sizeof(*new_items) * (max_size + 1);
     if (cs106b_malloc((void *) &new_items, new_msize))
@@ -211,8 +204,8 @@ static int _pqueue_resize(struct pqueue *q, size_t max_size)
     memset(new_items, 0, new_msize);
 
     if (q->items != NULL) {
-        copy_size = max_size < q->size ? max_size + 1: q->size + 1;
-        memcpy(new_items, q->items, sizeof(*new_items) * copy_size);
+        q->size = max_size < q->size ? max_size + 1: q->size + 1;
+        memcpy(new_items, q->items, sizeof(*new_items) * q->size);
         free(q->items);
     }
 

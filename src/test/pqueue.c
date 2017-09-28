@@ -19,16 +19,16 @@ int main(int argc, char *argv[])
 
     ret = EXIT_FAILURE;
     pqueue_init(&q1, PQUEUE_INC);
-    printf("pqueue_init(q1)\n");
+    printf("pqueue_init(q1, PQUEUE_INC)\n");
     pqueue_init(&q2, PQUEUE_INC);
-    printf("pqueue_init(q2)\n");
+    printf("pqueue_init(q2, PQUEUE_INC)\n");
 
     // push items to queue
     for (i = 0; i < ITEM_NUM; i++) {
-        items[i] = i;
+        items[i] = 2 * ITEM_NUM - i;
         if (pqueue_push(&q1, items + i, items[i]))
             goto free_q1;
-        printf("pqueue_push(q1, %zu)\n", items[i]);
+        printf("pqueue_push(q1, %zu, %zu)\n", items[i], items[i]);
     }
 
     // pop items from queue
