@@ -1,69 +1,94 @@
 /*
 SYNOPSIS
+========
 
-    int set_init(struct set *set);
-    int set_add(struct set *set, const char *item);
-    int set_del(struct set *set, const char *item);
-    int set_exist(struct set *set, const char *item);
+    void set_init(struct set *set);
     void set_free(struct set *set);
+    int set_add(struct set *set, const char *key);
+    int set_del(struct set *set, const char *key);
+    int set_exist(struct set *set, const char *key);
+    int set_next(struct set *set, const char **key);
+    void set_ireset(struct set *set);
+    int set_copy(struct set *dest, struct set *src);
+    int set_clone(struct set **dest, struct set *src);
 
 COMPLEXITY
+==========
 
-    fn                  best                worst
+    fn                  best        worst
     -----------------------------------------------------------
-    set_init()          htable_init()       htable_init()
-    set_add()           htable_set()        htable_set()
-    set_del()           htable_del()        htable_del()
-    set_exist()         htable_get()        htable_get()
-    set_free()          htable_free()       htable_free()
+    set_init()          1           1
+    set_free()          1           1
+    set_add()           1           n
+    set_del()           1           n
+    set_exist()         1           1
+    set_next()          1           n
+    set_ireset()        1           1
+    set_copy()          n           n
+    set_clone()         n           n
     -----------------------------------------------------------
 
-    n is number of items in set.
+    n is number of keys in set.
 
 DESCRIPTION
+===========
 
-    set_init() construct an set.
+    set_init() and set_free() construct/destruct an set.
 
-    set_add() add an item into set. If item is early exist, do nothing.
+    set_add() add a key into set. If key is early exist, calling will ignore
+    that key.
 
-    set_del() remove an item from set.
+    set_del() remove an key from set.
 
-    set_exist() check item in set or not.
+    set_exist() check key in set or not.
 
-    set_free() free memory usage by set.
+    set_next() retrieve next key in set.
+
+    set_ireset() reset iterator of set. It cause set_next() start from begin.
+
+    set_copy() copy keys from source to dest set.
+
+    set_clone() create new set called dest, then copy keys from source to dest
+    set.
 
 RETURNS
+=======
 
-    set_init(), set_add(), set_del() on success return 0, on failure return -1.
+    On success, return 0. On failure, return -1.
 
-    set_exist() on item is exist return 1, on item is not exist return 0.
+    set_exist() on exist, return 1. On not exist return 0.
 
-AUTHORS
+ERRORS
+======
 
-    Kevin Leptons <kevin.leptons@gmail.com>
+    CS106B_EKEY                 Acess to non-exists key in set
+    CS106B_EINDEX               Iterate to end of iterator
+    SYS_ENOMEM                  System memory is full
 */
 
-#ifndef __CS106B_SET_H__
-#define __CS106B_SET_H__
+#ifndef _CS106B_SET_H_
+#define _CS106B_SET_H_
 
 #include <stdlib.h>
 
-#include <cs106b/htable.h>
+#include <cs106b/htab.h>
 #include <cs106b/vector.h>
 
 struct set
 {
-    struct htable map;
+    struct htab tab;
     struct vector keys;
     size_t iter;
 };
 
-int set_init(struct set *set);
-int set_add(struct set *set, const char *item);
-int set_del(struct set *set, const char *item);
-int set_exist(struct set *set, const char *item);
-void *set_next(struct set *set);
-int set_iter_reset(struct set *set);
+void set_init(struct set *set);
 void set_free(struct set *set);
+int set_add(struct set *set, const char *key);
+int set_del(struct set *set, const char *key);
+int set_exist(struct set *set, const char *key);
+int set_next(struct set *set, const char **key);
+void set_ireset(struct set *set);
+int set_copy(struct set *dest, struct set *src);
+int set_clone(struct set **dest, struct set *src);
 
 #endif

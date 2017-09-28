@@ -114,7 +114,8 @@ int htab_get(struct htab *table, const char *key, void **value)
         return -1;
     }
 
-    *value =  item->value;
+    if (value != NULL)
+        *value =  item->value;
     return 0;
 }
 
