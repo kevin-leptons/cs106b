@@ -1,5 +1,6 @@
 /*
 SYNOPSIS
+========
 
     svmap - string vector map.
 
@@ -11,6 +12,7 @@ SYNOPSIS
     void svmap_free(struct svmap *map);
 
 COMPLEXITY
+==========
 
     fn                  best                worst
     ------------------------------------------------------------
@@ -25,6 +27,7 @@ COMPLEXITY
     n is number of items in map.
 
 DESCRIPTION
+===========
 
     String vector map store key-value pair. Key is string vector and value
     is pointer to any types.
@@ -42,39 +45,41 @@ DESCRIPTION
 
     svmap_free() free memory which use by map.
 
+ARGUMENTS
+=========
+
+    <key> is vector of string.
+
 RETURNS
+=======
 
-    svmap_init(), svmap_set(), svmap_del() on success return 0, on failure
-    return -1.
+    On success, return 0. On failure, return -1;
 
-    svmap_keys() on success return pointer to vector of vector<string>,
-    on failure return NULL.
+ERRORS
+======
 
-    svmap_get() on success return pointer to value, on failure return NULL.
-
-AUTHORS
-
-    Kevin Leptons <kevin.leptons@gmail.com>
+    CS106B_EKEY                 Access to non exist key
+    SYS_ENOMEM                  System memory is full
 */
 
-#ifndef __CS106B_SVMAP_H__
-#define __CS106B_SVMAP_H__
+#ifndef _CS106B_SVMAP_H_
+#define _CS106B_SVMAP_H_
 
 #include <cs106b/vector.h>
-#include <cs106b/htable.h>
+#include <cs106b/htab.h>
 
 struct svmap
 {
-    struct htable hmap;
-    struct vector keys;
-    struct htable kmap;
+    struct htab vtab;           // string_key => value
+    struct htab ktab;           // string_key => index_of_key in keys
+    struct vector keys;         // vector<key>
 };
 
-int svmap_init(struct svmap *map);
+void svmap_init(struct svmap *map);
+void svmap_free(struct svmap *map);
 int svmap_set(struct svmap *map, struct vector *key, void *value);
-void * svmap_get(struct svmap *map, struct vector *key);
+int svmap_get(struct svmap *map, struct vector *key, void **value);
 int svmap_del(struct svmap *map, struct vector *key);
 struct vector * svmap_keys(struct svmap *map);
-void svmap_free(struct svmap *map);
 
 #endif
