@@ -4,6 +4,7 @@ SYNOPSIS
 
     void set_init(struct set *set);
     void set_free(struct set *set);
+    int set_resize(struct set *set, size_t size);
     int set_add(struct set *set, const char *key);
     int set_del(struct set *set, const char *key);
     int set_exist(struct set *set, const char *key);
@@ -19,6 +20,7 @@ COMPLEXITY
     -----------------------------------------------------------
     set_init()          1           1
     set_free()          1           1
+    set_resize()        n           n
     set_add()           1           n
     set_del()           1           n
     set_exist()         1           1
@@ -34,6 +36,9 @@ DESCRIPTION
 ===========
 
     set_init() and set_free() construct/destruct an set.
+
+    set_rsize() change size of set's storage. If size is less than current
+    size, some keys will be lost.
 
     set_add() add a key into set. If key is early exist, calling will ignore
     that key.
@@ -83,6 +88,7 @@ struct set
 
 void set_init(struct set *set);
 void set_free(struct set *set);
+int set_resize(struct set *set, size_t size);
 int set_add(struct set *set, const char *key);
 int set_del(struct set *set, const char *key);
 int set_exist(struct set *set, const char *key);

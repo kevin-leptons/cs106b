@@ -12,16 +12,37 @@ void set_init(struct set *set)
 
 void set_free(struct set *set)
 {
+    size_t i;
+    char *key;
+
+    for (i = 0; i < set->keys.size; i++) {
+        vector_get(&set->keys, i, (void *) &key);
+        free(key);
+    }
     vector_free(&set->keys);
     htab_free(&set->tab);
     set->iter = 0;
 }
 
+int set_resize(struct set *set, size_t size)
+{
+    if (htab_resize(&set->tab, size))
+        return -1;
+    if (vector_resize(&set->keys, size))
+        return -1;
+    return 0;
+}
+
 int set_add(struct set *set, const char *key)
 {
+    char *vkey;
+
+    if (cs106b_malloc((void *) &vkey, strlen(key)))
+        return -1;
     if (htab_set(&set->tab, key, NULL))
         return -1;
-    if (vector_add(&set->keys, (void*) key))
+    strcpy(vkey, key);
+    if (vector_add(&set->keys, (void*) vkey))
         return -1;
     return 0;
 }
@@ -39,6 +60,7 @@ int set_del(struct set *set, const char *key)
             return -1;
         if (strcmp(vkey, key))
             continue;
+        free(vkey);
         if (vector_del(&set->keys, i))
             return -1;
         return 0;

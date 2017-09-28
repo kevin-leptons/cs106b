@@ -40,7 +40,7 @@ int vector_resize(struct vector *vector, size_t max_size)
     }
     vector->front = new_front;
     vector->max_size = max_size;
-    return -1;
+    return 0;
 }
 
 int vector_get(struct vector *vector, size_t index, void **value)
