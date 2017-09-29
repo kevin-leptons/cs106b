@@ -7,6 +7,9 @@ NAME
 SYNOPSIS
 ========
 
+RETURNS
+=======
+
 ERRORS
 ======
 */
@@ -47,14 +50,15 @@ struct graph_edge
 struct graph
 {
     enum graph_type type;
-    struct ihtable vertexes;        // htable<size_t, graph_vertex>
-    struct i2htable edges;          // htable<<size_t, size_t>, graph_edge>
+    struct ihtab vertexes;        // htab<size_t, graph_vertex>
+    struct i2htab edges;          // htab<<size_t, size_t>, graph_edge>
 
     struct pset _vertex_set;        // pset<graph_vertex *>
     struct pset _edge_set;          // pset<graph_edge *>
 };
 
-int graph_init(struct graph *g, enum graph_type type);
+void graph_init(struct graph *g, enum graph_type type);
+void graph_free(struct graph *g);
 int graph_add_vertex(struct graph *g, size_t id, size_t cost, void *data);
 int graph_add_edge(struct graph *g, size_t begin, size_t end, size_t weight);
 int graph_del_vertex(struct graph *g, size_t id);
@@ -77,6 +81,5 @@ int graph_krk(struct graph *g, struct pset *edges);
 size_t graph_cost(struct graph *g, struct list *path);
 int graph_dump(struct graph *g);
 const char * graph_strtype(enum graph_type type);
-void graph_free(struct graph *g);
 
 #endif

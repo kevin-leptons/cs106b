@@ -61,7 +61,7 @@ int list_ins(struct list *list, void *value, size_t index)
     new_item->next = NULL;
     new_item->value = value;
 
-    if (_list_get(list, index, &item)) {
+    if (!_list_get(list, index, &item)) {
         if (espace_catch(CS106B_EINDEX)) {
             new_item->next = item;
             new_item->prev = item->prev;
@@ -134,8 +134,9 @@ static int _list_get(struct list *list, size_t index, struct list_item **item)
     size_t i;
 
     *item = list->front;
-    for (*item = list->front, i = 0; *item != NULL; *item = (*item)->next, i++)
+    for (i = 0; *item != NULL; *item = (*item)->next, i++)
         if (i == index)
             return 0;
+    espace_raise(CS106B_EINDEX);
     return -1;
 }
