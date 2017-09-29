@@ -1,3 +1,21 @@
+/*
+DESCRIPTION
+===========
+
+    Use to compress/decompress file.
+
+USAGE
+=====
+
+    ./dest/bin/006 encode origin_file compressed_file
+    ./dest/bin/006 decode compressed_file origin_file
+
+BUGS
+====
+
+    It doesn't restore origin file attribute and permission.
+*/
+
 #include <cs106b/huffman.h>
 
 #include <sys/types.h>
@@ -73,50 +91,55 @@ int huff_encode(const char *src, const char *dest)
     struct pqueue q;
     struct btree tree;
     struct bitvec map[HUFF_NCODE];
+    int ret;
 
+    ret = -1;
     sfd = open(src, O_RDONLY);
-    if (sfd < 0)
-        return -1;
+    if (sfd < 0) {
+        sys_raise(errno);
+        errno = 0;
+        goto finish;
+    }
     dfd = open(dest, O_RDWR | O_CREAT | O_TRUNC, HUFF_NFILE_MODE);
-    if (dfd < 0)
-        goto ERROR;
+    if (dfd < 0) {
+        sys_raise(errno);
+        errno = 0;
+        goto free_sfd;
+    }
 
     // count number of code which occurs in file
     if (_huff_count(sfd, nodes))
-        goto ERROR;
+        goto free_dfd;
 
     // priority queue with priority is frequent of code
     if (_huff_pqueue(nodes, &q))
-        goto ERROR;
+        goto free_dfd;
 
     // convert queue to queue with leaf is code and other is clone
     if (_huff_tree(&q, &tree))
-        goto ERROR;
+        goto free_dfd;
 
     // convert tree to encoding map
     memset(map, 0, sizeof(struct huff_node) * HUFF_NODE_CODE);
     if (_huff_map(&tree, map))
-        goto ERROR;
+        goto free_dfd;
 
     // write metadata of encoding to file
     if (_huff_wmeta(&tree, sfd, dfd))
-        goto ERROR;
+        goto free_dfd;
 
     // convert data and write to dest file
     if (_huff_wencode(map, sfd, dfd))
-        goto ERROR;
+        goto free_dfd;
 
-    close(sfd);
-    close(dfd);
-    return 0;
+    ret =  0;
 
-ERROR:
-    if (sfd >= 0)
-        close(sfd);
-    if (dfd >= 0)
+free_dfd:
         close(dfd);
-
-    return -1;
+free_sfd:
+    close(sfd);
+finish:
+    return ret;
 }
 
 int huff_decode(const char *src, const char *dest)
@@ -125,38 +148,44 @@ int huff_decode(const char *src, const char *dest)
     struct btree tree;          // huff tree
     int sfd;
     int dfd;
+    int ret;
 
-    sfd = -1;
-    dfd = -1;
+    ret = -1;
 
     sfd = open(src, O_RDONLY);
-    if (sfd < 0)
-        goto ERROR;
+    if (sfd < 0) {
+        sys_raise(errno);
+        errno = 0;
+        goto finish;
+    }
     dfd = open(dest, O_CREAT | O_TRUNC | O_WRONLY);
-    if (dfd < 0)
-        goto ERROR;
+    if (dfd < 0) {
+        sys_raise(errno);
+        errno = 0;
+        goto free_sfd;
+
+    }
     btree_init(&tree);
 
-    if (read(sfd, &info, sizeof(info)) != sizeof(info))
-        goto ERROR;
+    if (read(sfd, &info, sizeof(info)) != sizeof(info)) {
+        sys_raise(errno);
+        errno = 0;
+        goto free_btree;
+    }
     if (_huff_retree(sfd, &info, &tree))
-        goto ERROR;
+        goto free_btree;
     if (_huff_wdecode(sfd, dfd, &info, &tree))
-        goto ERROR;
+        goto free_btree;
 
-    close(sfd);
+    ret = 0;
+
+free_btree:
+    btree_free(&tree);
     close(dfd);
-    btree_free(&tree);
-    return 0;
-
-ERROR:
-    if (sfd >= 0)
-        close(sfd);
-    if (dfd >= 0)
-        close(dfd);
-    btree_free(&tree);
-
-    return -1;
+free_sfd:
+    close(sfd);
+finish:
+    return ret;
 }
 
 int huff_rinfo(const char *file, struct huff_info *info)
@@ -164,10 +193,17 @@ int huff_rinfo(const char *file, struct huff_info *info)
     int fd;
 
     fd = open(file, O_RDONLY);
-    if (fd < 0)
+    if (fd < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
-    if (read(fd, info, sizeof(*info)) != sizeof(*info))
+    }
+    if (read(fd, info, sizeof(*info)) != sizeof(*info)) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+
+    }
 
     return 0;
 }
@@ -186,8 +222,11 @@ static int _huff_count(int fd, struct huff_node nodes[HUFF_NCODE])
         rsize = read(fd, buf, sizeof(buf));
         if (rsize == 0)
             break;
-        if (rsize < 0)
+        if (rsize < 0) {
+            sys_raise(errno);
+            errno = 0;
             return -1;
+        }
 
         for (i = 0; i < rsize; i++)
             nodes[buf[i]].count += 1;
@@ -273,11 +312,17 @@ static int _huff_wmeta(struct btree *tree, int sfd, int dfd)
     struct stat sfd_stat;
 
     // point file cursor to after huff_info
-    if (lseek(dfd, 0, SEEK_SET) < 0)
+    if (lseek(dfd, 0, SEEK_SET) < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
     wsize = write(dfd, &info, sizeof(info));
-    if (wsize != sizeof(info))
+    if (wsize != sizeof(info)) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
 
     // write tree specification
     info.tree_size = 0;
@@ -287,14 +332,23 @@ static int _huff_wmeta(struct btree *tree, int sfd, int dfd)
         return -1;
 
     // rewrite huff_info with correct info
-    if (lseek(dfd, 0, SEEK_SET) < 0)
+    if (lseek(dfd, 0, SEEK_SET) < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
-    if (fstat(sfd, &sfd_stat))
+    }
+    if (fstat(sfd, &sfd_stat)) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
     info.raw_size = sfd_stat.st_size;
     wsize = write(dfd, &info, sizeof(info));
-    if (wsize != sizeof(info))
+    if (wsize != sizeof(info)) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
 
     return 0;
 }
@@ -309,10 +363,16 @@ static int _huff_wencode(struct bitvec *map, int sfd, int dfd)
     size_t bit_count;
     struct huff_info info;
 
-    if (lseek(sfd, 0, SEEK_SET) < 0)
+    if (lseek(sfd, 0, SEEK_SET) < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
-    if (lseek(dfd, 0, SEEK_END) < 0)
+    }
+    if (lseek(dfd, 0, SEEK_END) < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
 
     byfile_init(&ifile, sfd);
     bifile_init(&ofile, dfd, 0);
@@ -343,17 +403,29 @@ static int _huff_wencode(struct bitvec *map, int sfd, int dfd)
         return -1;
 
     // rewrite huff info
-    if (lseek(dfd, 0, SEEK_SET) < 0)
+    if (lseek(dfd, 0, SEEK_SET) < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
-    if (read(dfd, &info, sizeof(info)) != sizeof(info))
+    }
+    if (read(dfd, &info, sizeof(info)) != sizeof(info)) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
 
     info.enc_byte_size = byte_count;
     info.enc_bit_size = bit_count;
-    if (lseek(dfd, 0, SEEK_SET) < 0)
+    if (lseek(dfd, 0, SEEK_SET) < 0) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
-    if (write(dfd, &info, sizeof(info)) != sizeof(info))
+    }
+    if (write(dfd, &info, sizeof(info)) != sizeof(info)) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
 
     return 0;
 }
@@ -382,8 +454,11 @@ static int _huff_wmeta_cb(struct btree_node *node, void *arg)
     }
 
     wsize = write(wmeta_arg->fd, buf, to_wsize);
-    if (wsize != to_wsize)
+    if (wsize != to_wsize) {
+        sys_raise(errno);
+        errno = 0;
         return -1;
+    }
     wmeta_arg->info->tree_size += wsize;
 
     return 0;

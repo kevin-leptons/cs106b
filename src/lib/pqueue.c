@@ -46,8 +46,7 @@ int pqueue_push(struct pqueue *q, void *data, size_t priority)
     q->items[q->size].priority = priority;
 
     // resort items
-    child_index = q->size;
-    for (;;) {
+    for (child_index = q->size;; child_index = parent_index) {
         parent_index = child_index / 2;
         if (parent_index == 0)
             break;
@@ -66,7 +65,6 @@ int pqueue_push(struct pqueue *q, void *data, size_t priority)
             else
                 break;
         }
-        child_index = parent_index;
     }
 
     return 0;
@@ -204,8 +202,8 @@ static int _pqueue_resize(struct pqueue *q, size_t max_size)
     memset(new_items, 0, new_msize);
 
     if (q->items != NULL) {
-        q->size = max_size < q->size ? max_size + 1: q->size + 1;
-        memcpy(new_items, q->items, sizeof(*new_items) * q->size);
+        q->size = max_size < q->size ? max_size: q->size;
+        memcpy(new_items, q->items, sizeof(*new_items) * (q->size + 1));
         free(q->items);
     }
 

@@ -23,7 +23,7 @@ void btree_free(struct btree *tree)
 int btree_mknode(struct btree_node **new_node, struct btree_node *left,
                  struct btree_node *right, void *data)
 {
-    if (cs106b_malloc((void *) new_node, sizeof(*new_node)))
+    if (cs106b_malloc((void *) new_node, sizeof(struct btree_node)))
         return -1;
     (*new_node)->left = left;
     (*new_node)->right = right;
