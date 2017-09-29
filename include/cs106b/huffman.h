@@ -1,15 +1,18 @@
 /*
 NAME
+====
 
     huffman - data compression api.
 
 SYNOPSIS
+========
 
     int huff_encode(const char *src, const char *dest);
     int huff_decode(const char *src, const char *dest);
     int huff_rinfo(const char *file, struct huff_info *info);
 
 DESCRIPTION
+===========
 
     huff_encode() compress data from source file and write compressed data
     into destination file.
@@ -20,13 +23,16 @@ DESCRIPTION
     huff_rinfo() read information about compression in compressed file.
 
 RETURNS
+=======
 
-    huff_encode(), huff_decode(), huff_rinfo() on success return 0, on failure
-    return -1.
+    On success, return 0. On failure, return -1.
 
-AUTHORS
+ERRORS
+======
 
-    Kevin Leptons <kevin.leptons@gmail.com>
+    SYS_ENOMEM                  System memory is full
+    SYS_EACCESS                 File is invalid
+    SYS_EPERM                   Read or write prermission to file
 */
     
 #ifndef __CS106B_HUFFMAN_H__
