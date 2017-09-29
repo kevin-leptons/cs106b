@@ -40,6 +40,9 @@ USAGE
         # depedency tools
         apt-get install git gcc cmake libgl1-mesa-dev freeglut3-dev
 
+        # install espace from source here
+        # https://github.com/kevin-leptons/espace/tree/v0.1.0
+
         # source code
         git clone https://github.com/kevin-leptons/cs106b.git
         cd cs106b
