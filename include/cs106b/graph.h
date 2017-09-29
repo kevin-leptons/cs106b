@@ -1,11 +1,18 @@
 /*
+NAME
+====
+
+    graph - work with graph.
+
 SYNOPSIS
-AUTHORS
-    Kevin Leptons <kevin.leptons@gmail.com>
+========
+
+ERRORS
+======
 */
 
-#ifndef __CS106B_GRAPH_H__
-#define __CS106B_GRAPH_H__
+#ifndef _CS106B_GRAPH_H_
+#define _CS106B_GRAPH_H_
 
 #include <stdlib.h>
 
