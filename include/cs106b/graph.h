@@ -17,9 +17,9 @@ ERRORS
 #include <stdlib.h>
 
 #include <cs106b/pset.h>
-#include <cs106b/htable.h>
-#include <cs106b/ihtable.h>
-#include <cs106b/i2htable.h>
+#include <cs106b/htab.h>
+#include <cs106b/ihtab.h>
+#include <cs106b/i2htab.h>
 #include <cs106b/list.h>
 
 enum graph_type
