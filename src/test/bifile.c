@@ -160,7 +160,6 @@ static void _read_write(const char *src, const char *dest)
     struct bifile ofile;
     int sfd;
     int dfd;
-    int r;
     size_t rbit_count;
     size_t wbit_count;
 
