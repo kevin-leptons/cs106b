@@ -118,8 +118,7 @@ int bitvec_copy(struct bitvec *dest, struct bitvec *src)
     bitvec_free(dest);
     dest->size = src->size;
     dest->max_size = src->max_size;
-    dest->items = malloc(src->max_size);
-    if (dest->items == NULL)
+    if (cs106b_malloc((void *) &dest->items, src->max_size))
         return -1;
     memcpy(dest->items, src->items, src->max_size);
 
@@ -168,8 +167,7 @@ static int _bitvec_resize(struct bitvec *vector, size_t max_size)
     size_t byte_size;
 
     byte_size = sizeof(char) * max_size;
-    new_items = malloc(byte_size);
-    if (new_items == NULL)
+    if (cs106b_malloc((void *) &new_items, byte_size))
         return -1;
     memset(new_items, 0, byte_size);
 
@@ -183,7 +181,6 @@ static int _bitvec_resize(struct bitvec *vector, size_t max_size)
 
     vector->items = new_items;
     vector->max_size = max_size;
-
     return 0;
 }
 

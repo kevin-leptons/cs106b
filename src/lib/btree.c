@@ -3,6 +3,7 @@
 #include <cs106b/queue.h>
 #include <cs106b/stack.h>
 #include <cs106b/mem.h>
+#include <cs106b/error.h>
 
 static int _btree_inw(struct btree_node *node, btree_walkcb callback,
                       void *arg);
@@ -12,6 +13,11 @@ static int _btree_postw(struct btree_node *node, btree_walkcb callback,
 void btree_init(struct btree *tree)
 {
     tree->root = NULL;
+}
+
+void btree_free(struct btree *tree)
+{
+    // ????
 }
 
 int btree_mknode(struct btree_node **new_node, struct btree_node *left,
@@ -89,42 +95,50 @@ int btree_levelw(struct btree *tree, btree_walkcb callback, void *arg)
     struct queue queue;
     struct btree_node *node;
     int cb_result;
+    int ret;
 
+    ret = -1;
     queue_init(&queue);
     if (tree->root != NULL) {
         if (queue_push(&queue, tree->root))
-            goto ERROR;
+            goto free_queue;
     }
 
     for (; queue.size > 0;) {
         if (queue_pop(&queue, (void *) &node))
-            goto ERROR;
+            goto free_queue;
         cb_result = callback(node, arg);
         if (cb_result < 0)
-            goto ERROR;
+            goto free_queue;
         else if (cb_result == 1)
             break;
 
         if (node->left != NULL) {
             if (queue_push(&queue, node->left))
-                goto ERROR;
+                goto free_queue;
         }
         if (node->right != NULL) {
             if (queue_push(&queue, node->right))
-                goto ERROR;
+                goto free_queue;
         }
     }
+    ret = 0;
 
+free_queue:
     queue_free(&queue);
-    return 0;
+    return ret;
+}
 
-ERROR:
-    queue_free(&queue);
+int btree_copy(struct btree *dest, struct btree *src)
+{
+    espace_raise(CS106B_EIMPLEMENT);
     return -1;
 }
 
-void btree_free(struct btree *tree)
+int btree_clone(struct btree **dest, struct btree *src)
 {
+    espace_raise(CS106B_EIMPLEMENT);
+    return -1;
 }
 
 static int 

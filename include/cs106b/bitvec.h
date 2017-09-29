@@ -26,6 +26,15 @@ COMPLEXITY
     -----------------------------------------------------------
     bitvec_init()                   1               1
     bitvec_free()                   1               1
+    bitvec_resize()                 n               n
+    bitvec_add()                    1               1
+    bitvec_get()                    1               1
+    bitvec_del()                    1               n
+    bitvec_cat()                    n               n
+    bitvec_clear()                  1               1
+    bitvec_copy()                   n               n
+    bitvec_clone()                  n               n
+    bitvec_dump()                   n               n
     -----------------------------------------------------------
 
     n is number of bits in vector.

@@ -14,6 +14,8 @@ SYNOPSIS
     int btree_inw(struct btree *tree, btree_walkcb callback, void *arg);
     int btree_postw(struct btree *tree, btree_walkcb callback, void *arg);
     int btree_levelw(struct btree *tree, btree_walkcb callback, void *arg);
+    int btree_copy(struct btree *dest, struct btree *src);
+    int btree_clone(struct btree **dest, struct btree *src);
     int btree_dump(struct btree * tree);
 
 COMPLEXITY
@@ -28,6 +30,8 @@ COMPLEXITY
     btree_inw()                 log2(n)         log2(n)
     btree_postw()               log2(n)         log2(n)
     btree_levelw()              log2(n)         log2(n)
+    btree_copy()                n               n
+    btree_clone()               n               n
     btree_dump()                log2(n)         log2(n)
     -------------------------------------------------------
 
@@ -102,6 +106,8 @@ int btree_prew(struct btree *tree, btree_walkcb callback, void *arg);
 int btree_inw(struct btree *tree, btree_walkcb callback, void *arg);
 int btree_postw(struct btree *tree, btree_walkcb callback, void *arg);
 int btree_levelw(struct btree *tree, btree_walkcb callback, void *arg);
+int btree_copy(struct btree *dest, struct btree *src);
+int btree_clone(struct btree **dest, struct btree *src);
 int btree_dump(struct btree * tree);
 
 #endif

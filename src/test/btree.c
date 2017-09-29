@@ -14,13 +14,14 @@ static int _walk_callback(struct btree_node *node, void *arg);
 
 int main(int argc, char *argv[])
 {
-    struct btree tree;
+    struct btree t1;
     struct btree_node *node;
     struct callback_arg cb_arg;
     int ret;
 
     ret = EXIT_FAILURE;
-    btree_init(&tree);
+    printf("btree_init(t1)\n");
+    btree_init(&t1);
     cb_arg.inum = 64;
 
     // root
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
     if (cs106b_malloc((void *) &node->data, 32))
         goto free_node;
     strcpy(node->data, "root");
-    tree.root = node;
+    t1.root = node;
 
     // left
     if (btree_mknode(&node, NULL, NULL, NULL))
@@ -37,7 +38,7 @@ int main(int argc, char *argv[])
     if (cs106b_malloc((void *) &node->data, 32))
         goto free_node;
     strcpy(node->data, "left");
-    tree.root->left = node;
+    t1.root->left = node;
 
     // left left
     if (btree_mknode(&node, NULL, NULL, NULL))
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     if (cs106b_malloc((void *) &node->data, 32))
         goto free_node;
     strcpy(node->data, "left left");
-    tree.root->left->left = node;
+    t1.root->left->left = node;
 
     // right
     if (btree_mknode(&node, NULL, NULL, NULL))
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
     if (cs106b_malloc((void *) &node->data, 32))
         goto free_node;
     strcpy(node->data, "right");
-    tree.root->right = node;
+    t1.root->right = node;
 
     // right right
     if (btree_mknode(&node, NULL, NULL, NULL))
@@ -61,30 +62,28 @@ int main(int argc, char *argv[])
     if (cs106b_malloc((void *) &node->data, 32))
         goto free_node;
     strcpy(node->data, "right right");
-    tree.root->right->right = node;
+    t1.root->right->right = node;
 
+    // walking
     printf("walk in pre-order\n");
-    if (btree_prew(&tree, _walk_callback, &cb_arg))
-        goto free_tree;
-
+    if (btree_prew(&t1, _walk_callback, &cb_arg))
+        goto free_t1;
     printf("walk in in-order\n");
-    if (btree_inw(&tree, _walk_callback, &cb_arg))
-        goto free_tree;
-
+    if (btree_inw(&t1, _walk_callback, &cb_arg))
+        goto free_t1;
     printf("walk in post-order\n");
-    if (btree_postw(&tree, _walk_callback, &cb_arg))
-        goto free_tree;
-
+    if (btree_postw(&t1, _walk_callback, &cb_arg))
+        goto free_t1;
     printf("walk in level-order\n");
-    if (btree_levelw(&tree, _walk_callback, &cb_arg))
-        goto free_tree;
+    if (btree_levelw(&t1, _walk_callback, &cb_arg))
+        goto free_t1;
 
     ret = EXIT_SUCCESS;
 
 free_node:
     free(node);
-free_tree:
-    btree_free(&tree);
+free_t1:
+    btree_free(&t1);
 finish:
     if (espace_check())
         fprintf(stderr, "Error: %s\n", espace->id);
