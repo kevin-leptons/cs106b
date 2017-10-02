@@ -55,6 +55,12 @@ USAGE
         # or clear
         ./ctl clear
 
+NOTES
+=====
+
+    Abstract Data Type in this project is researching target, it is not for
+    real project.
+
 REFERENCES
 ==========
 
